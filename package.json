@@ -1,11 +1,11 @@
 {
-  "name": "express-ig",
+  "name": "hoceen",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "node src/index",
+    "start": "node index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
