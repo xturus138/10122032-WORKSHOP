@@ -39,6 +39,13 @@ module.exports = {
         const {id} = req.params;
         const balance = req.body['balance']
         const amount = req.body['amount'].replace(".","")
+        if(balance < amount){
+            return res.json({
+                "status_code": 400,
+                "message": "Saldo Tidak Mencukupi",
+                "data": null
+            })
+        }
         const updateBalance = parseInt(balance) - parseInt(amount)
         try{
             const { data, error } = await supabase
@@ -56,6 +63,39 @@ module.exports = {
                 res.json({
                     "status_code": 200,
                     "message": "Berhasil Mengambil Uang",
+                    "data": data
+                })
+            }
+        }catch(error){
+            res.json({
+                "status_code": 500,
+                "message": "Gagal",
+                "data": null,
+                "error": error
+            })
+        }
+    },
+    deposit : async (req,res) => {
+        const {id} = req.params;
+        const balance = req.body['balance']
+        const amount = req.body['amount'].replace(".","")
+        const updateBalance = parseInt(balance) + parseInt(amount)
+        try{
+            const { data, error } = await supabase
+            .from('balance')
+            .update({ amount: updateBalance })
+            .eq('id', id)
+
+            if(error){
+                res.json({
+                    "status_code": 400,
+                    "message": "Gagal Menyimpan Uang",
+                    "errors": error
+                })
+            }else{
+                res.json({
+                    "status_code": 200,
+                    "message": "Berhasil Menyimpan Uang",
                     "data": data
                 })
             }

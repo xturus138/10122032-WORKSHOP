@@ -31,7 +31,7 @@
     function openForm(url, type = "create") {
         var title = {
             create: "Tambah Data",
-            withdraw : "Mengambil Uang",
+            balance : "Saldo Kantin",
             item  : "item"
         };
 
@@ -84,25 +84,32 @@
                 if (res.status_code == 200) {
                     var kantinList = res.data;
                     let kantinLi = '';
-                    kantinList.forEach(items => $('#kantin').html(kantinLi += `<div class="col-md-4">
-                        <div class="costum-card-list">
-                            <a onclick="openForm('/item/detail/`+items.id+`','item')" ><img class="costum-card-img" src="/uploads/${items.image}"></a>
-                            <div class="card-body">
-                                <span>${items.name}</span>
-                                <div class="info">
-                                    <span class="datetime">${truncateString(moment((items.created_at)).format('LLL'),15)}</span>
-    							</div>
-                                <div>
-                                    <span class="price">Rp `+addCommas((items.price))+`</span>
+                    if(kantinList.length > 0 ){
+                        kantinList.forEach(items => $('#kantin').html(kantinLi += `<div class="col-md-4">
+                            <div class="costum-card-list">
+                                <a onclick="openForm('/item/detail/`+items.id+`','item')" ><img class="costum-card-img" src="/uploads/${items.image}"></a>
+                                <div class="card-body">
+                                    <span>${items.name}</span>
+                                    <div class="info">
+                                        <span class="datetime">${truncateString(moment((items.created_at)).format('LLL'),15)}</span>
+                                    </div>
+                                    <div>
+                                        <span class="price">Rp `+addCommas((items.price))+`</span>
+                                    </div>
+                                    <p>${truncateString(items.description,62)}</p>
                                 </div>
-                                <p>${truncateString(items.description,62)}</p>
                             </div>
-                        </div>
-                    </div>`));
+                        </div>`));
+                    }else{
+                        $('#kantin').html(`<div class="col-md-12 text-center">
+                            <span>Tidak ada item</span>
+                        </div>`);                        
+                    }
                 }
             },
             error: function () {
                 $('.list').show();
+                $('#kantin')
                 $('.loading').hide();
             }
         });
@@ -116,7 +123,7 @@
             success: function (res) {
                 if (res.status_code == 200) {
                     var balance = res.data;
-                    $('#balance-box').html(`<button onclick="openForm('/balance/`+balance.id+`', 'withdraw')" 
+                    $('#balance-box').html(`<button onclick="openForm('/balance/`+balance.id+`', 'balance')" 
                         class="btn-auth outline-primary">Saldo Box : Rp `+addCommas((balance.amount))+`
                     </button>`);
                 }
@@ -128,121 +135,14 @@
     }
     balanceBox()
 
-    $(document).on("submit", "#create-form", function (e) {
-        e.preventDefault();
-        $.ajax({
-            url: "item/store",
-            type: "POST",
-            data: new FormData(this),
-            processData: false,
-            contentType: false,
-            dataType: "json",
-            beforeSend: function () {
-                $("button").attr("disabled", true);
-            },
-            success: function (response) {
-                $("button").attr("disabled", false);
-                if (response.status_code == 500) return toastAlert("error", response.message);
-                if (response.status_code == 400) return toastAlert("error", response.message);
 
-                toastAlert("success", response.message);
-                $("#create-form").trigger("reset");
-                formModal.hide();
-                items()
-            },
-            error: function (reject) {
-                $("button").attr("disabled", false);
-                toastAlert("error", "Terjadi kesalahan pada server");
-                formModal.hide();
-                items()
-            }
-        })
-    })
-
-    $(document).on("submit", "#withdraw-form", function () {
-        $.ajax({
-            url: $(this).data("target"),
-            type: "POST",
-            data: {
-                balance : $("input[name=balance]").val(),
-                amount : $("input[name=amount]").val(),
-                
-            },
-            dataType: "json",
-            beforeSend: function () {
-                $("button").attr("disabled", true); 
-            },
-            success: function (response) {
-                $("button").attr("disabled", false);
-                if (response.status_code == 500) return toastAlert("error", response.message);
-                if (response.status_code == 400) return toastAlert("error", response.message);
-
-                toastAlert("success", response.message);
-                $("#withdraw-form").trigger("reset");
-                formModal.hide();
-                balanceBox()
-            },
-            error: function (reject) {
-                $("button").attr("disabled", false);
-                toastAlert("error", "Terjadi kesalahan pada server");
-                formModal.hide();
-                balanceBox()
-            }
-        })
-    })
-
-    $(document).on("submit", "#buy-form", function () {
-        $.ajax({
-            url: $(this).data("target"),
-            type: "POST",
-            data: {
-                balanceId : $("input[name=balanceId]").val(),
-                balance : $("input[name=balance]").val(),
-                price : $("input[name=price]").val(),
-                
-            },
-            dataType: "json",
-            beforeSend: function () {
-                $("button").attr("disabled", true); 
-            },
-            success: function (response) {
-                $("button").attr("disabled", false);
-                if (response.status_code == 500) return toastAlert("error", response.message);
-                if (response.status_code == 400) return toastAlert("error", response.message);
-
-                toastAlert("success", response.message);
-                $("#withdraw-form").trigger("reset");
-                formModal.hide();
-                items()
-                balanceBox()
-            },
-            error: function (reject) {
-                $("button").attr("disabled", false);
-                toastAlert("error", "Terjadi kesalahan pada server");
-                formModal.hide();
-                items()
-                balanceBox()
-            }
-        })
-    })
-
+    
     $(document).on("input", ".numeric", function() {
         this.value = this.value.replace(/\D/g,'');
     });
 
     $(document).on("input", ".comma", function() {
         this.value = addCommas(this.value)
-    });
-
-    $(document).on("input", "#amount", function() {
-        var value = parseInt($(this).val().replaceAll('.', ''));
-        var balance = parseInt($("#balance").val());
-        if(value > balance) {
-            $("#withdraw").attr("disabled", true);
-            $(this).val('')
-        }else{
-            $("#withdraw").attr("disabled", false);
-        }
     });
 
 </script>

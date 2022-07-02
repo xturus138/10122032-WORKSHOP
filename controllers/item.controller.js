@@ -1,4 +1,5 @@
 const supabase = require('../database')
+const fs = require("fs");
 
 module.exports = {
     getItem : async (req, res) => {
@@ -63,6 +64,7 @@ module.exports = {
         }
     },
     detail : async (req,res) => {
+        loggedIn = req.session.loggedIn
         const {id} = req.params 
         const { data } = await supabase
             .from('items')
@@ -74,13 +76,13 @@ module.exports = {
             .from('balance')
             .select('id,amount')
             .maybeSingle()
-        return res.render('items/detail',{data,balance})
+        return res.render('items/detail',{data,balance,loggedIn})
     },
 
     buy : async (req,res) => {
         const {id} = req.params
         const balanceId = req.body['balanceId']
-        const price = req.body['price']
+        const price = req.body['item_price']
         const balance = req.body['balance']
         const updateBalance = parseInt(balance) + parseInt(price)
         try{
@@ -105,6 +107,7 @@ module.exports = {
                     "data": data
                 })
             }
+        fs.unlinkSync('./public/uploads/' + req.body['image'])
         }catch(error){
             res.json({
                 "status_code": 500,

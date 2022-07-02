@@ -34,6 +34,7 @@ router.post('/item/store',upload.single('image'),itemController.store)
 router.get('/balance/getBalance',balanceController.getBalance)
 router.get('/balance/:id',balanceController.index)
 router.post('/balance/withdraw/:id',balanceController.withdraw)
+router.post('/balance/deposit/:id',balanceController.deposit)
 
  
 module.exports = router;

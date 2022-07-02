@@ -1,20 +1,20 @@
 <form id="create-form" onsubmit="return false;">
     <div class="mb-3">
-        <label class="form-label pt-0" for="image">Gambar</label>
+        <label class="my-label mb-2" for="image">Gambar</label>
         <input class="form-control" id="image" name="image" type="file" required />
     </div>
     
-    <label class="form-label pt-0" for="name">Nama Barang</label>
+    <label class="my-label mb-2" for="name">Nama Barang</label>
     <div class="mb-3 my-input">
         <input class="my-form" id="name" name="name" type="text" required />
     </div>
 
-    <label class="form-label pt-0" for="description">Deksripsi</label>
+    <label class="my-label mb-2" for="description">Deksripsi</label>
     <div class="mb-3 my-input">
         <input class="my-form" id="description" name="description" type="text" required />
     </div>
 
-    <label class="form-label pt-0" for="price">Harga</label>
+    <label class="my-label mb-2" for="price">Harga</label>
     <div class="my-input">
         <input class="my-form numeric comma" name="price" type="text" required />
     </div>
@@ -22,3 +22,35 @@
         <button class="btn color-primary" type="submit">Simpan</button>
     </div>
 </form>
+<script>
+    $(document).on("submit", "#create-form", function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "item/store",
+            type: "POST",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            beforeSend: function () {
+                $("button").attr("disabled", true);
+            },
+            success: function (response) {
+                $("button").attr("disabled", false);
+                if (response.status_code == 500) return toastAlert("error", response.message);
+                if (response.status_code == 400) return toastAlert("error", response.message);
+
+                toastAlert("success", response.message);
+                $("#create-form").trigger("reset");
+                formModal.hide();
+                items()
+            },
+            error: function (reject) {
+                $("button").attr("disabled", false);
+                toastAlert("error", "Terjadi kesalahan pada server");
+                formModal.hide();
+                items()
+            }
+        })
+    })
+</script>

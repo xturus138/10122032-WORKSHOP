@@ -1,27 +1,21 @@
-<div>
-    <%= data.name %></h1>
-</div>
-<form data-target="/item/buy/<%= data.id %>" id="buy-form" onsubmit="return false;">
-    <input type="hidden" name="image" value="<%= data.image %>">
-    <input type="hidden" value="<%= balance.id %>" name="balanceId">
-    <input type="hidden" value="<%= balance.amount %>" name="balance">
-    <input type="hidden" value="<%= data.price %>" name="item_price">
-    <% if(loggedIn) { %>
-    <div class="d-flex flex-row-reverse mt-3">
-        <button class="btn color-primary" type="submit">Beli</button>
+<form data-target="/balance/deposit/<%= data.id %>" id="deposit-form" onsubmit="return false;">
+    <label class="my-label mb-2" for="amount">Jumlah Simpan</label>
+    <input type="hidden" value="<%= data.amount %>" name="balance">
+    <div class="mb-3 my-input">
+        <input type="text" class="my-form numeric comma" name="amount_deposit" autocomplete="off" required/>
     </div>
-    <% } %>
+    <div class="d-flex flex-row-reverse mt-3">
+        <button class="btn color-primary" id="deposit" type="submit">Simpan</button>
+    </div>
 </form>
 <script>
-    $(document).on("submit", "#buy-form", function () {
+    $(document).on("submit", "#deposit-form", function () {
         $.ajax({
             url: $(this).data("target"),
             type: "POST",
             data: {
-                balanceId: $("input[name=balanceId]").val(),
-                balance: $("input[name=balance]").val(),
-                item_price: $("input[name=item_price]").val(),
-                image: $("input[name=image]").val(),
+                balance : $("input[name=balance]").val(),
+                amount : $("input[name=amount_deposit]").val(), 
             },
             dataType: "json",
             beforeSend: function () {
@@ -33,17 +27,15 @@
                 if (response.status_code == 400) return toastAlert("error", response.message);
 
                 toastAlert("success", response.message);
-                $("#withdraw-form").trigger("reset");
+                $("#deposit-form").trigger("reset");
                 formModal.hide();
-                items()
                 balanceBox()
             },
             error: function (reject) {
                 $("button").attr("disabled", false);
                 toastAlert("error", "Terjadi kesalahan pada server");
                 formModal.hide();
-                items()
-                balanceBox()                
+                balanceBox()
             }
         })
     })

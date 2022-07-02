@@ -1,0 +1,54 @@
+<form data-target="/balance/withdraw/<%= data.id %>" id="withdraw-form" onsubmit="return false;">
+    <label class="my-label mb-2" for="amount">Jumlah Ambil</label>
+    <input type="hidden" value="<%= data.amount %>" id="balance" name="balance">
+    <div class="mb-3 my-input">
+        <input type="text" class="my-form numeric comma" id="amount-withdraw" name="amount_withdraw" autocomplete="off" required/>
+    </div>
+    <div class="d-flex flex-row-reverse mt-3">
+        <button class="btn color-primary" id="withdraw" type="submit" disabled>Ambil</button>
+    </div>
+</form>
+<script>
+    $(document).on("submit", "#withdraw-form", function () {
+        $.ajax({
+            url: $(this).data("target"),
+            type: "POST",
+            data: {
+                balance : $("input[name=balance]").val(),
+                amount : $("input[name=amount_withdraw]").val(),
+                
+            },
+            dataType: "json",
+            beforeSend: function () {
+                $("button").attr("disabled", true); 
+            },
+            success: function (response) {
+                $("button").attr("disabled", false);
+                if (response.status_code == 500) return toastAlert("error", response.message);
+                if (response.status_code == 400) return toastAlert("error", response.message);
+
+                toastAlert("success", response.message);
+                $("#withdraw-form").trigger("reset");
+                formModal.hide();
+                balanceBox()
+            },
+            error: function (reject) {
+                $("button").attr("disabled", false);
+                toastAlert("error", "Terjadi kesalahan pada server");
+                formModal.hide();
+                balanceBox()
+            }
+        })
+    })
+
+    $(document).on("input", "#amount-withdraw", function() {
+        var value = parseInt($(this).val().replaceAll('.', ''));
+        var balance = parseInt($("#balance").val());
+        if(value > balance) {
+            $("#withdraw").attr("disabled", true);
+            $(this).val('')
+        }else{
+            $("#withdraw").attr("disabled", false);
+        }
+    });
+</script>
