@@ -54,7 +54,7 @@
                 toastAlert("info", "Mencoba Keluar");
             },
             success: function () {
-
+               
             },
             error: function (reject) {
                 console.log(reject);
@@ -96,6 +96,26 @@
     }
     items()
 
+    function balanceBox(){
+        $.ajax({
+            type: 'get',
+            url: '/balance/getBalance',
+            success: function (res) {
+                if (res.status_code == 200) {
+                    var balance = res.data;
+                    $('#balance-box').html(`<button onclick="openForm('/balance/`+balance.id+`', 'withdraw')" 
+                        class="btn-auth outline-primary">Saldo Box : Rp `+addCommas((balance.amount))+`
+                    </button>`);
+                }
+            },
+            error: function () {
+                $('#balance').text('0');
+            }
+        });
+    }
+    balanceBox()
+
+
 
     $(document).on("submit", "#create-form", function (e) {
         e.preventDefault();
@@ -112,7 +132,7 @@
             success: function (response) {
                 $("button").attr("disabled", false);
                 if (response.status_code == 500) return toastAlert("error", response.message);
-                if (response.status_code == 400) return populateErrorMessage(response.errors);
+                if (response.status_code == 400) return toastAlert("error", response.message);
 
                 toastAlert("success", response.message);
                 $("#create-form").trigger("reset");
@@ -128,14 +148,56 @@
         })
     })
 
+    $(document).on("submit", "#withdraw-form", function () {
+        $.ajax({
+            url: $(this).data("target"),
+            type: "POST",
+            data: {
+                balance : $("input[name=balance]").val(),
+                amount : $("input[name=amount]").val(),
+                
+            },
+            dataType: "json",
+            beforeSend: function () {
+                $("button").attr("disabled", true); 
+            },
+            success: function (response) {
+                $("button").attr("disabled", false);
+                if (response.status_code == 500) return toastAlert("error", response.message);
+                if (response.status_code == 400) return toastAlert("error", response.message);
+
+                toastAlert("success", response.message);
+                $("#withdraw-form").trigger("reset");
+                formModal.hide();
+                balanceBox()
+            },
+            error: function (reject) {
+                $("button").attr("disabled", false);
+                toastAlert("error", "Terjadi kesalahan pada server");
+                formModal.hide();
+                balanceBox()
+            }
+        })
+    })
+
     $(document).on("input", ".numeric", function() {
-            this.value = this.value.replace(/\D/g,'');
+        this.value = this.value.replace(/\D/g,'');
     });
 
-    $(document).on("input", "#comma", function() {
+    $(document).on("input", ".comma", function() {
         this.value = addCommas(this.value);
     });
 
+    $(document).on("input", "#amount", function() {
+        var value = parseInt($(this).val().replace(".",""));
+        var balance = parseInt($("#balance").val());
+        if(value > balance) {
+            $("#withdraw").attr("disabled", true);
+            $(this).val('')
+        }else{
+            $("#withdraw").attr("disabled", false);
+        }
+    });
 
 </script>
 </body>

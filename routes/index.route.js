@@ -29,7 +29,8 @@ router.get('/item',itemController.getItem)
 router.get('/item/create', itemController.create)
 router.post('/item/store',upload.single('image'),itemController.store)
 
-router.get('/balance',balanceController.index)
-router.post('/balance/withdraw',balanceController.withdraw)
+router.get('/balance/getBalance',balanceController.getBalance)
+router.get('/balance/:id',balanceController.index)
+router.post('/balance/withdraw/:id',balanceController.withdraw)
  
 module.exports = router;

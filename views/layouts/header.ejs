@@ -33,7 +33,7 @@
 		 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<% if(loggedIn) { %>
 				<div class="col-xl-11 text-auth">
-					<button href="" onclick="openForm('/balance', 'withdraw')" class="btn-auth outline-primary">Saldo Box : Rp <%= amount %> </button>
+					<span id="balance-box"></span>
 					<a href="" onclick="logout()" class="btn-auth outline-primary">LOGOUT</a>
 				</div>
 			<% } else { %>
