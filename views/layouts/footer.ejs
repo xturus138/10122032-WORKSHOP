@@ -1,0 +1,143 @@
+<div class="modal" tabindex="-1" data-form-modal>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" data-modal-title></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" data-modal-body></div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script src="/js/alert.js"></script>
+<script src="/js/currency.js"></script>
+<script>
+    var formModal;
+
+    document.querySelector("[data-form-modal]").addEventListener("hidden.bs.modal", function () {
+        document.querySelector("[data-modal-title]").innerText = "";
+        document.querySelector("[data-modal-body]").innerHTML = "";
+    });
+
+    function openForm(url, type = "create") {
+        var title = {
+            create: "Tambah Data",
+            withdraw : "Mengambil Uang"
+        };
+
+        var modalTitle = title[type] ? title[type] : "";
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (res) {
+                $("[data-modal-title]").text(modalTitle);
+                $("[data-modal-body]").html(res);
+                formModal = new bootstrap.Modal(document.querySelector("[data-form-modal]"), {});
+                formModal.show();
+            },
+            error: function (reject) {
+                toastAlert("error", "An error occurred on the server");
+                console.log(reject)
+            }
+        })
+    }
+
+    function logout() {
+        $.ajax({
+            url: "/logout",
+            type: "GET",
+            beforeSend: function () {
+                toastAlert("info", "Mencoba Keluar");
+            },
+            success: function () {
+
+            },
+            error: function (reject) {
+                console.log(reject);
+            }
+        })
+    }
+
+    function items() {
+        $('.loading').show();
+        $('.list').hide();
+        $.ajax({
+            type: 'get',
+            url: 'item',
+            success: function (res) {
+                $('.list').show();
+                $('.loading').hide();
+                if (res.status_code == 200) {
+                    var kantinList = res.data;
+                    let kantinLi = '';
+                    kantinList.forEach(items => $('#kantin').html(kantinLi += `<div class="col-md-4">
+                        <div class="costum-card-list">
+                            <a href="${items.link}"><img class="costum-card-img" src="/uploads/${items.image}"></a>
+                            <div class="card-body">
+                                <span>${items.name}</span>
+                                <div>
+                                    <span class="price">Rp `+addCommas((items.price))+`</span>
+                                </div>
+                                <p>${items.description}</p>
+                            </div>
+                        </div>
+                    </div>`));
+                }
+            },
+            error: function () {
+                $('.list').show();
+                $('.loading').hide();
+            }
+        });
+    }
+    items()
+
+
+    $(document).on("submit", "#create-form", function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "item/store",
+            type: "POST",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            beforeSend: function () {
+                $("button").attr("disabled", true);
+            },
+            success: function (response) {
+                $("button").attr("disabled", false);
+                if (response.status_code == 500) return toastAlert("error", response.message);
+                if (response.status_code == 400) return populateErrorMessage(response.errors);
+
+                toastAlert("success", response.message);
+                $("#create-form").trigger("reset");
+                formModal.hide();
+                items()
+            },
+            error: function (reject) {
+                $("button").attr("disabled", false);
+                toastAlert("error", "Terjadi kesalahan pada server");
+                formModal.hide();
+                items()
+            }
+        })
+    })
+
+    $(document).on("input", ".numeric", function() {
+            this.value = this.value.replace(/\D/g,'');
+    });
+
+    $(document).on("input", "#comma", function() {
+        this.value = addCommas(this.value);
+    });
+
+
+</script>
+</body>
+
+</html>

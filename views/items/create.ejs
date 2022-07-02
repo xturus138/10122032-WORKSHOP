@@ -1,0 +1,24 @@
+<form id="create-form" onsubmit="return false;">
+    <div class="mb-3">
+        <label class="form-label pt-0" for="image">Gambar</label>
+        <input class="form-control" id="image" name="image" type="file" required />
+    </div>
+    
+    <label class="form-label pt-0" for="name">Nama Barang</label>
+    <div class="mb-3 my-input">
+        <input class="my-form" id="name" name="name" type="text" required />
+    </div>
+
+    <label class="form-label pt-0" for="description">Deksripsi</label>
+    <div class="mb-3 my-input">
+        <input class="my-form" id="description" name="description" type="text" required />
+    </div>
+
+    <label class="form-label pt-0" for="price">Harga</label>
+    <div class="my-input">
+        <input class="my-form numeric" id="comma" name="price" type="text" required />
+    </div>
+    <div class="d-flex flex-row-reverse mt-3">
+        <button class="btn color-primary" type="submit">Simpan</button>
+    </div>
+</form>

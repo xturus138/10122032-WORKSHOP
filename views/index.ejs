@@ -1,0 +1,22 @@
+<%- include('./layouts/header'); %>
+<%- include('./components/loading'); %>
+<div class="py-3"></div>
+<div class="container">
+    <section class="list">
+        <div class="list-barang">
+            <div class="d-flex  mb-3">
+                <span class="title">Kantin Kejujuran</span>
+            </div>
+            <% if (loggedIn) { %>
+                <div class="d-flex flex-row-reverse">
+                    <button class="btn-auth color-primary add-item-btn" onclick="openForm('item/create', 'create')">Tambah</button>
+                </div>
+            <% } %>
+            </div>
+            <div class="row" id="kantin">
+
+            </div>
+        </div>
+    </section>
+</div>
+<%- include('./layouts/footer'); %>

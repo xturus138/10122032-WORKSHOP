@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/sweetalert2.css">
+    <title><%= title %></title>
+    <style>
+        body {
+            font-family: 'Open Sauce One', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="auth-header">
+            <a href="/">
+                <img src="/img/logo.png" alt="">
+            </a>
+        </header>
+        <div class="row justify-content-center">
+            <div class="col-xxl-5 col-lg-4 col-lg-5">
+                <div class="d-flex p-sm-5 p-4">
+                    <div class="w-100">
+                        <div class="d-flex flex-column h-100">
+                            <div class="auth-card"
+                                style="padding:20px;box-shadow: 0 1px 6px 0 var(--color-shadow,rgba(49,53,59,0.12));">
+                                <h1 class="auth-title">Daftar Akun</h1>
+                                <div class="auth-desc">
+                                    <span class="auth-desc">Sudah punya akun ? <a href="/login"
+                                            class="text-main ">Masuk</a> </span>
+                                </div>
+                                <form onsubmit="return false;" data-form>
+                                    <div class="mb-3">
+                                        <label class="auth-label">ID Siswa</label>
+                                        <div class="input-group">
+                                            <input type="text" class="input-id numeric" id="student_id" name="student_id"
+                                                maxlength="3" minlength="3" required autocomplete="off">
+                                            <input class="input-group-text" name="unique_code" id="unique_code" style="width:20%" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="auth-label">Nama</label>
+                                        <div class="input-group my-input">
+                                            <input type="text" class="my-form" name="name" required autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="d-flex align-items-start">
+                                            <div class="flex-grow-1">
+                                                <label class="auth-label">Password</label>
+                                            </div>
+                                        </div>
+                                        <div class="input-group my-input">
+                                            <input type="password" class="my-form" name="password" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <button class="auth-button" type="submit">Daftar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/sweetalert2.all.min.js"></script>
+    <script src="/js/alert.js"></script>
+    <script>
+        $('#student_id').on('keyup', function () {
+            value = this.value.split('');
+            sum = value.reduce((pv, cv) => {
+                return pv + (parseFloat(cv) || 0);
+            }, 0);
+            result = ('0' + sum).slice(-2)
+            if (value.length > 0) {
+                $('#unique_code').val(result);
+            } else if (value.length == 0) {
+                $('#unique_code').val('');
+            }
+        });
+
+        $('form').on('submit', function(){
+        $.ajax({
+            url: '/register',
+            type: 'POST',
+            data: {
+                student_id: $("input[name=student_id]").val(),
+                unique_code : $("input[name=unique_code]").val(),
+                name: $("input[name=name]").val(),
+                password: $("input[name=password]").val()
+            },
+            dataType: "json",
+            beforeSend: function() {
+                $("form").attr("disabled", true);
+                $("button").attr("disabled", true);
+            },
+            success: function(res){
+                $("form").attr("disabled", false);
+                $("button").attr("disabled", false);
+                if(res.status_code == 200) {
+                    toastAlert("success", res.message);
+                    setTimeout(function() {
+                        window.location.replace("/login");
+                    }, 1000);
+                }
+                else {
+                    toastAlert("error", res.message);
+                }
+                $('form').trigger("reset");
+            },
+            error: function(reject) {
+                $("form").attr("disabled", false);
+                $("button").attr("disabled", false);
+                toastAlert("error", "An error occurred on the server");
+            }
+        })
+    })
+
+    $(document).on("input", ".numeric", function() {
+            this.value = this.value.replace(/\D/g,'');
+    });
+
+    </script>
+</body>
+
+</html>
