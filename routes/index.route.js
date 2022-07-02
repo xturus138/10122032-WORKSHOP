@@ -26,11 +26,14 @@ router.get('/register',auth,registerController.index)
 router.post('/register',registerController.register)
 
 router.get('/item',itemController.getItem)
+router.get('/item/detail/:id',itemController.detail)
+router.post('/item/buy/:id',itemController.buy)
 router.get('/item/create', itemController.create)
 router.post('/item/store',upload.single('image'),itemController.store)
 
 router.get('/balance/getBalance',balanceController.getBalance)
 router.get('/balance/:id',balanceController.index)
 router.post('/balance/withdraw/:id',balanceController.withdraw)
+
  
 module.exports = router;

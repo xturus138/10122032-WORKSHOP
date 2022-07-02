@@ -19,7 +19,6 @@ body {
 }
 
 html {
-    /* for demo purposes only */
     margin: 0em;
 }
 
@@ -39,6 +38,10 @@ a {
     vertical-align: baseline;
     background: transparent;
     text-decoration: none;
+}
+
+a:hover {
+    cursor:pointer;
 }
 
 .custom-nav {
@@ -149,9 +152,8 @@ footer {
 }
 
 .costum-card-list .author {
-    font-family: montserrat-semi;
+    font-family: montserrat-semi !important;
     font-size: 11px;
-    margin-right: 7px;
     color: #999;
     text-transform: uppercase;
 }
@@ -160,6 +162,7 @@ footer {
     font-family: montserrat-semi;
     font-size: 11px;
     color: #999;
+    font-weight: bold;
     text-transform: uppercase;
 }
 

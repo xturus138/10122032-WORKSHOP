@@ -9,12 +9,18 @@
         </div>
     </div>
 </div>
-
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/sweetalert2.all.min.js"></script>
 <script src="/js/alert.js"></script>
 <script src="/js/currency.js"></script>
+<script src="/js/moment.js"></script>
 <script>
+
+    function truncateString(yourString, maxLength) {
+        const index = yourString.indexOf(" ", maxLength);
+        return index === -1 ? yourString : yourString.substring(0, index)
+    }
+
     var formModal;
 
     document.querySelector("[data-form-modal]").addEventListener("hidden.bs.modal", function () {
@@ -25,7 +31,8 @@
     function openForm(url, type = "create") {
         var title = {
             create: "Tambah Data",
-            withdraw : "Mengambil Uang"
+            withdraw : "Mengambil Uang",
+            item  : "item"
         };
 
         var modalTitle = title[type] ? title[type] : "";
@@ -36,6 +43,9 @@
             success: function (res) {
                 $("[data-modal-title]").text(modalTitle);
                 $("[data-modal-body]").html(res);
+                if(title[type] == 'item') {
+                    $(".modal-header").css('display', 'none')
+                }
                 formModal = new bootstrap.Modal(document.querySelector("[data-form-modal]"), {});
                 formModal.show();
             },
@@ -76,13 +86,16 @@
                     let kantinLi = '';
                     kantinList.forEach(items => $('#kantin').html(kantinLi += `<div class="col-md-4">
                         <div class="costum-card-list">
-                            <a href="${items.link}"><img class="costum-card-img" src="/uploads/${items.image}"></a>
+                            <a onclick="openForm('/item/detail/`+items.id+`','item')" ><img class="costum-card-img" src="/uploads/${items.image}"></a>
                             <div class="card-body">
                                 <span>${items.name}</span>
+                                <div class="info">
+                                    <span class="datetime">${truncateString(moment((items.created_at)).format('LLL'),15)}</span>
+    							</div>
                                 <div>
                                     <span class="price">Rp `+addCommas((items.price))+`</span>
                                 </div>
-                                <p>${items.description}</p>
+                                <p>${truncateString(items.description,62)}</p>
                             </div>
                         </div>
                     </div>`));
@@ -109,13 +122,11 @@
                 }
             },
             error: function () {
-                $('#balance').text('0');
+                $('#balance-box')
             }
         });
     }
     balanceBox()
-
-
 
     $(document).on("submit", "#create-form", function (e) {
         e.preventDefault();
@@ -175,6 +186,41 @@
                 $("button").attr("disabled", false);
                 toastAlert("error", "Terjadi kesalahan pada server");
                 formModal.hide();
+                balanceBox()
+            }
+        })
+    })
+
+    $(document).on("submit", "#buy-form", function () {
+        $.ajax({
+            url: $(this).data("target"),
+            type: "POST",
+            data: {
+                balanceId : $("input[name=balanceId]").val(),
+                balance : $("input[name=balance]").val(),
+                price : $("input[name=price]").val(),
+                
+            },
+            dataType: "json",
+            beforeSend: function () {
+                $("button").attr("disabled", true); 
+            },
+            success: function (response) {
+                $("button").attr("disabled", false);
+                if (response.status_code == 500) return toastAlert("error", response.message);
+                if (response.status_code == 400) return toastAlert("error", response.message);
+
+                toastAlert("success", response.message);
+                $("#withdraw-form").trigger("reset");
+                formModal.hide();
+                items()
+                balanceBox()
+            },
+            error: function (reject) {
+                $("button").attr("disabled", false);
+                toastAlert("error", "Terjadi kesalahan pada server");
+                formModal.hide();
+                items()
                 balanceBox()
             }
         })

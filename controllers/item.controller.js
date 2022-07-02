@@ -5,7 +5,7 @@ module.exports = {
         try{
             const { data: items, error } = await supabase
                 .from('items')
-                .select('*')
+                .select('id,name,price,image,description,created_at')
             if(error){
                 res.json({
                     "status_code": 400,
@@ -60,6 +60,58 @@ module.exports = {
                     "message": error,
                     "data": null
                 })
+        }
+    },
+    detail : async (req,res) => {
+        const {id} = req.params 
+        const { data } = await supabase
+            .from('items')
+            .select('*')
+            .eq('id',id)
+            .maybeSingle()
+
+        const { data : balance } = await supabase
+            .from('balance')
+            .select('id,amount')
+            .maybeSingle()
+        return res.render('items/detail',{data,balance})
+    },
+
+    buy : async (req,res) => {
+        const {id} = req.params
+        const balanceId = req.body['balanceId']
+        const price = req.body['price']
+        const balance = req.body['balance']
+        const updateBalance = parseInt(balance) + parseInt(price)
+        try{
+            const { data, error } = await supabase
+                .from('items')
+                .delete()
+                .eq('id',id)
+            if(error){
+                res.json({
+                    "status_code": 400,
+                    "message": "Gagal Membeli Barang",
+                    "errors": error
+                })
+            }else{
+                await supabase
+                    .from('balance')
+                    .update({ amount: updateBalance })
+                    .eq('id', balanceId)
+                res.json({
+                    "status_code": 200,
+                    "message": "Berhasil Membeli Barang",
+                    "data": data
+                })
+            }
+        }catch(error){
+            res.json({
+                "status_code": 500,
+                "message": "Gagal",
+                "data": null,
+                "error": error
+            })
         }
     }
 }
