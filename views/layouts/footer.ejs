@@ -231,11 +231,11 @@
     });
 
     $(document).on("input", ".comma", function() {
-        this.value = addCommas(this.value);
+        this.value = addCommas(this.value)
     });
 
     $(document).on("input", "#amount", function() {
-        var value = parseInt($(this).val().replace(".",""));
+        var value = parseInt($(this).val().replaceAll('.', ''));
         var balance = parseInt($("#balance").val());
         if(value > balance) {
             $("#withdraw").attr("disabled", true);
