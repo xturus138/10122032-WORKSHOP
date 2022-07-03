@@ -38,10 +38,10 @@ module.exports = {
     withdraw : async (req,res) => {
         const {id} = req.params;
         const balance = req.body['balance']
-        const amount = req.body['amount'].replace(".","")
+        const amount = req.body['amount']
         const updateBalance = parseInt(balance) - parseInt(amount)
         try{
-            if(balance < amount){
+            if(parseInt(amount) > parseInt(balance)){
                 return res.json({
                     "status_code": 400,
                     "message": "Saldo Tidak Mencukupi",
@@ -79,7 +79,7 @@ module.exports = {
     deposit : async (req,res) => {
         const {id} = req.params;
         const balance = req.body['balance']
-        const amount = req.body['amount'].replace(".","")
+        const amount = req.body['amount']
         const updateBalance = parseInt(balance) + parseInt(amount)
         try{
             const { data, error } = await supabase

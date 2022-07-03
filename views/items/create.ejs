@@ -16,41 +16,9 @@
 
     <label class="my-label mb-2" for="price">Harga</label>
     <div class="my-input">
-        <input class="my-form numeric comma" name="price" type="text" required />
+        <input class="my-form numeric comma" name="price" type="text" maxlength="9" required />
     </div>
     <div class="d-flex flex-row-reverse mt-3">
         <button class="btn color-primary" type="submit">Simpan</button>
     </div>
 </form>
-<script>
-    $(document).on("submit", "#create-form", function (e) {
-        e.preventDefault();
-        $.ajax({
-            url: "item/store",
-            type: "POST",
-            data: new FormData(this),
-            processData: false,
-            contentType: false,
-            dataType: "json",
-            beforeSend: function () {
-                $("button").attr("disabled", true);
-            },
-            success: function (response) {
-                $("button").attr("disabled", false);
-                if (response.status_code == 500) return toastAlert("error", response.message);
-                if (response.status_code == 400) return toastAlert("error", response.message);
-
-                toastAlert("success", response.message);
-                $("#create-form").trigger("reset");
-                formModal.hide();
-                items()
-            },
-            error: function (reject) {
-                $("button").attr("disabled", false);
-                toastAlert("error", "Terjadi kesalahan pada server");
-                formModal.hide();
-                items()
-            }
-        })
-    })
-</script>

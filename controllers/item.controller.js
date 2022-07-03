@@ -100,6 +100,7 @@ module.exports = {
         return res.render('items/create')
     },
     store  : async (req,res) => {
+        const price = req.body['price'].replace(/[^0-9]/g, '')
         try{
             const { data,error } = await supabase
             .from('items')
@@ -107,7 +108,7 @@ module.exports = {
                 name : req.body['name'],
                 image : req.file['filename'],
                 description : req.body['description'],
-                price : req.body['price'].replace(".",""),
+                price : price,
             }])
             if(error){
                 res.json({
