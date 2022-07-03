@@ -1,5 +1,5 @@
 <div class="modal" tabindex="-1" data-form-modal>
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" data-modal-title></h5>
@@ -14,6 +14,7 @@
 <script src="/js/alert.js"></script>
 <script src="/js/currency.js"></script>
 <script src="/js/moment.js"></script>
+<script src="/js/dropify.js"></script>
 <script>
 
     $(document).ready(function() {
@@ -48,7 +49,6 @@
             balance : "Saldo Kantin",
             item  : "item"
         };
-
         var modalTitle = title[type] ? title[type] : "";
 
         $.ajax({
@@ -59,9 +59,12 @@
                 $("[data-modal-body]").html(response);
                 if(title[type] == 'item') {
                     $(".modal-header").css('display', 'none')
+                }else{
+                    $(".modal-header").css('display','flex')
                 }
                 formModal = new bootstrap.Modal(document.querySelector("[data-form-modal]"), {});
                 formModal.show();
+                var drEvent = $('.dropify').dropify()
             },
             error: function (reject) {
                 toastAlert("error", "An error occurred on the server");
