@@ -55,6 +55,11 @@
             }
         })
     }
+    $(document).ready(function() {
+        $('[data-form-modal]').on('hidden.bs.modal', function (e) {
+            $(this).find("input,textarea,select").val('').end()
+        })
+    })
 
     function logout() {
         $.ajax({
@@ -64,7 +69,7 @@
                 toastAlert("info", "Mencoba Keluar");
             },
             success: function () {
-               
+                toastAlert("success", "Berhasil Keluar");
             },
             error: function (reject) {
                 console.log(reject);

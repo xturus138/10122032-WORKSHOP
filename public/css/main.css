@@ -423,6 +423,12 @@ footer {
     border-radius: 5px;
 }
 
+.dropdown-item-costum{
+    font-size: 12px;
+    padding: 20px;
+}
+
+
 @media (max-width: 1200px) {
     .text-auth {
         text-align: left !important;
