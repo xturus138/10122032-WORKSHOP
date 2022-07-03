@@ -1,9 +1,6 @@
-<div>
-    <img src="/uploads/<%= data.image %>" class="image-item mb-3">
-    <h2><%= data.name %></h2>
-    <p><%= data.description %> </p>
-</div>
-
+<img src="/uploads/<%= data.image %>" class="img-fluid image-item mb-3">
+<h2><%= data.name %></h2>
+<p><%= data.description %> </p>
 <form data-target="/item/buy/<%= data.id %>" id="buy-form" onsubmit="return false;">
     <input type="hidden" name="image" value="<%= data.image %>">
     <input type="hidden" value="<%= balance.id %>" name="balanceId">
