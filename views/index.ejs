@@ -5,14 +5,70 @@
         <span class="title">Kantin Kejujuran</span>
     </div>
     <section class="list">
-        <div class="list-barang">
+        <div class="list-barang mb-3">
             <% if (loggedIn) { %>
-                <div class="d-flex flex-row-reverse">
-                    <button class="btn-auth color-primary add-item-btn" onclick="openForm('item/create', 'create')">Tambah</button>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="search-item">
+                            <div class="search-box">
+                                <div class="search-icon">
+                                    <span>
+                                        <img src="icons/search.svg" style="display:block;width:1.7rem;height:2.0rem">
+                                    </span>
+                                </div>
+                                <form id="search-form" class="search">
+                                    <input type="text" name="search_item" class="form-control search_item" placeholder="Pencarian">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row container">
+                    <div class="col-md-2 my-input me-auto mb-4">
+                        <select name="filter" id="filter" class="my-form">
+                            <option value="terbaru">Terbaru</option>
+                            <option value="terlama">Terlama</option>
+                            <option value="a-z">A-Z</option>
+                            <option value="z-a">Z-A</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+    
+                    </div>
+                    <div class="col-md-2 ms-auto">
+                        <button class="btn-auth color-primary add-item-btn" onclick="openForm('item/create', 'create')">Tambah</button>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="search-item">
+                            <div class="search-box">
+                                <div class="search-icon">
+                                    <span>
+                                        <img src="icons/search.svg" style="display:block;width:1.7rem;height:2.0rem">
+                                    </span>
+                                </div>
+                                <form id="search-form" class="search">
+                                    <input type="text" name="search_item" class="form-control search_item" placeholder="Pencarian">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row container">
+                    <div class="col-md-2 my-input me-auto mb-4">
+                        <select name="filter" id="filter" class="my-form">
+                            <option value="terbaru">Terbaru</option>
+                            <option value="terlama">Terlama</option>
+                            <option value="a-z">A-Z</option>
+                            <option value="z-a">Z-A</option>
+                        </select>
+                    </div>
                 </div>
             <% } %>
-            </div>
-            <div class="row" id="kantin">
+        </div>
+            <div class="row " id="kantin">
 
             </div>
         </div>

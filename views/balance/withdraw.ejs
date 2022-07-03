@@ -2,7 +2,7 @@
     <label class="my-label mb-2" for="amount">Jumlah Ambil</label>
     <input type="hidden" value="<%= data.amount %>" id="balance" name="balance">
     <div class="mb-3 my-input">
-        <input type="text" class="my-form numeric comma" id="amount-withdraw" name="amount_withdraw" autocomplete="off" required/>
+        <input type="text" class="my-form numeric comma" id="amount-withdraw" name="amount" autocomplete="off" required/>
     </div>
     <div class="d-flex flex-row-reverse mt-3">
         <button class="btn color-primary" id="withdraw" type="submit" disabled>Ambil</button>
@@ -15,8 +15,7 @@
             type: "POST",
             data: {
                 balance : $("input[name=balance]").val(),
-                amount : $("input[name=amount_withdraw]").val(),
-                
+                amount : $("input[name=amount]").val(),
             },
             dataType: "json",
             beforeSend: function () {

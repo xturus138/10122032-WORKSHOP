@@ -18,57 +18,51 @@
 
 <body>
     <div class="container">
-        <header class="auth-header">
+        <header class="auth-header mb-5">
             <a href="/">
                 <img src="/img/logo.png" alt="">
             </a>
         </header>
-        <div class="row justify-content-center">
-            <div class="col-xxl-5 col-lg-4 col-lg-5">
-                <div class="d-flex p-sm-5 p-4">
-                    <div class="w-100">
-                        <div class="d-flex flex-column h-100">
-                            <div class="auth-card"
-                                style="padding:20px;box-shadow: 0 1px 6px 0 var(--color-shadow,rgba(49,53,59,0.12));">
-                                <h1 class="auth-title">Masuk</h1>
-                                <div class="auth-desc">
-                                    <span class="auth-desc">Belum punya akun ? <a href="/register"
-                                            class="text-main ">Daftar</a> </span>
-                                </div>
-                                <form onsubmit="return false;" data-form>
-                                    <div class="mb-3">
-                                        <label class="my-label">ID Siswa</label>
-                                        <div class="input-group my-input">
-                                            <input type="text" class="my-form numeric" name="student_id"
-                                                maxlength="5" minlength="5" required autocomplete="off">
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="flex-grow-1">
-                                                <label class="my-label">Password</label>
-                                            </div>
-                                        </div>
-                                        <div class="input-group my-input">
-                                            <input type="password" class="my-form" name="password" required >
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <button class="auth-button" type="submit">Masuk</button>
-                                    </div>
-                                </form>
+        <div class="row">
+            <div class="d-flex justify-content-center">
+                <div class="auth-card"
+                    style="padding:20px;box-shadow: 0 1px 6px 0 var(--color-shadow,rgba(49,53,59,0.12));">
+                    <h1 class="auth-title">Masuk</h1>
+                    <div class="auth-desc">
+                        <span class="auth-desc">Belum punya akun ? <a href="/register" class="text-main ">Daftar</a>
+                        </span>
+                    </div>
+                    <form onsubmit="return false;" data-form>
+                        <div class="mb-3">
+                            <label class="my-label">ID Siswa</label>
+                            <div class="input-group my-input">
+                                <input type="text" class="my-form numeric" name="student_id" maxlength="5" minlength="5"
+                                    required autocomplete="off">
                             </div>
                         </div>
-                    </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-grow-1">
+                                    <label class="my-label">Password</label>
+                                </div>
+                            </div>
+                            <div class="input-group my-input">
+                                <input type="password" class="my-form" name="password" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <button class="auth-button" type="submit">Masuk</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-<script src="/js/jquery-3.6.0.min.js"></script>
-<script src="/js/sweetalert2.all.min.js"></script>
-<script src="/js/alert.js"></script>
-<script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/sweetalert2.all.min.js"></script>
+    <script src="/js/alert.js"></script>
+    <script>
         $("[data-form]").submit(function (e) {
             $.ajax({
                 url: "/login",
@@ -83,14 +77,14 @@
                     $("button").attr("disabled", true);
                 },
                 success: function (res) {
-                    if (res.status_code == 500){
+                    if (res.status_code == 500) {
                         toastAlert("error", res.message)
                         $("button").attr("disabled", false);
-                    }else if(res.status_code == 200){
+                    } else if (res.status_code == 200) {
                         $("button").attr("disabled", true);
                         toastAlert("success", res.message);
                         window.location.replace('/');
-                    } 
+                    }
                 },
                 error: function (reject) {
                     $("button").attr("disabled", false);
@@ -99,9 +93,9 @@
             })
         })
 
-        $(document).on("input", ".numeric", function() {
-            this.value = this.value.replace(/\D/g,'');
+        $(document).on("input", ".numeric", function () {
+            this.value = this.value.replace(/\D/g, '');
         });
-</script>
+    </script>
 </body>
 </html>

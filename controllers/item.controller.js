@@ -3,30 +3,97 @@ const fs = require("fs");
 
 module.exports = {
     getItem : async (req, res) => {
+        const search = req.query.search_item
         try{
-            const { data: items, error } = await supabase
-                .from('items')
-                .select('id,name,price,image,description,created_at')
-            if(error){
-                res.json({
-                    "status_code": 400,
-                    "message": "Gagal Menampilkan Barang",
-                    "errors": error
-                })
+            if(search == null){
+                const { data: items, error } = await supabase
+                    .from('items')
+                    .select('id,name,price,image,description,created_at')
+                if(error){
+                    res.json({
+                        "status_code": 400,
+                        "message": "Gagal Menampilkan Barang",
+                        "errors": error
+                    })
+                }else{
+                    res.json({
+                        "status_code": 200,
+                        "message": "Berhasil Menampilkan Barang",
+                        "data": items,
+                    })
+                }
             }else{
-                res.json({
-                    "status_code": 200,
-                    "message": "Berhasil Menampilkan Barang",
-                    "data": items,
-                })
+                const { data: items,error } = await supabase
+                    .from('items')
+                    .select('id,name,price,image,description,created_at')
+                    .like('name', '%'+search+'%')
+                if(error){
+                    res.json({
+                        "status_code": 400,
+                        "message": "Gagal Mencari Barang",
+                        "errors": error
+                    })
+                }else{
+                    res.json({
+                        "status_code": 200,
+                        "message": "Berhasil Mencari Barang",
+                        "data": items,
+                    })    
+                }
             }
-        }catch{
+        }catch(error){
             res.json({
                 "status_code": 500,
                 "message": "Gagal",
                 "data": null,
                 "error": error
             })
+        }
+    },
+    getItemFilter : async (req, res) => {
+        const filter  = req.query.filter
+        if(filter == 'terlama'){
+                const {data,error} = await supabase
+                    .from('items')
+                    .select('id,name,price,image,description,created_at')
+                    .order('created_at', {ascending: true})
+                res.json({
+                    "status_code": error != true ? 200 : 400,
+                    "message": error != true ? "Mengurutkan Barang Terlama" : "Gagal Mengurutkan Barang",
+                    "data": error != true ? data : null,
+                })
+        }else if(filter == 'terbaru'){
+                const {data,error} = await supabase
+                    .from('items')
+                    .select('id,name,price,image,description,created_at')
+                    .order('created_at', {ascending: false})
+                res.json({
+                    "status_code": error != true ? 200 : 400,
+                    "message": error != true ? "Mengurutkan Barang Terbaru" : "Gagal Mengurutkan Barang",
+                    "data": error != true ? data : null,
+                })
+        }else if(filter == 'a-z'){
+                const {data,error} = await supabase
+                    .from('items')
+                    .select('id,name,price,image,description,created_at')
+                    .order('name', {ascending: true})
+
+                res.json({
+                    "status_code": error != true ? 200 : 400,
+                    "message": error != true ? "Mengurutkan Barang A-Z" : "Gagal Mengurutkan Barang",
+                    "data": error != true ? data : null,
+                })
+        }else{
+                const {data,error} = await supabase
+                    .from('items')
+                    .select('id,name,price,image,description,created_at')
+                    .order('name', {ascending: false})
+
+                res.json({
+                    "status_code": error != true ? 200 : 400,
+                    "message": error != true ? "Mengurutkan Barang Z-A" : "Gagal Mengurutkan Barang",
+                    "data": error != true ? data : null,
+                })
         }
     },
     create : async (req,res) => {
@@ -116,5 +183,6 @@ module.exports = {
                 "error": error
             })
         }
-    }
+    },
+
 }

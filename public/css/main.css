@@ -15,7 +15,13 @@
 
 body {
     background-color: #fff;
-    color: #071C4D;
+    color: #5e5c7f !important;
+    background-color: #f9f9ff;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 html {
@@ -42,6 +48,16 @@ a {
 
 a:hover {
     cursor:pointer;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #454360;
+    font-weight: 700;
+    margin: 20px 0;
+}
+
+h2 {
+    font-size: 28px;
 }
 
 .custom-nav {
@@ -273,6 +289,44 @@ footer {
     padding-top: 8px;
     padding-bottom: 8px;
 }
+.my-input-sort{
+    height: 40px;
+    border-radius: 8px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    -webkit-transition: border-color 280ms ease;
+    transition: border-color 280ms ease;
+    background-color: var(--color-page-background,#FFFFFF);
+    border: 1px solid var(--color-border,#E5E7E9);
+}
+.my-form-sort{
+    padding-left: 12px;
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+    color: var(--color-text-high,rgba(49,53,59,0.96));
+    font-family: inherit;
+    background-color: transparent;
+    line-height: 20px;
+    border: none;
+    outline: none;
+    height: auto;
+    font-size: 14px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
 .my-label{
     font-weight: 400;
     font-size: 0.8571428571428571rem;
@@ -324,6 +378,51 @@ footer {
 }
 
 
+/* search-box */
+.search-item .search-box{
+	position: relative;
+}
+
+.search-item .search-icon{
+	position: absolute;
+    width: 1rem;
+    height: 1rem    ;
+    top: 50%;
+    margin-top: -1rem;
+    left: 0.8rem;
+}
+
+.search-item .search-icon span{
+	display: block;
+    position: relative;
+}
+
+.search-item .search{
+	font-family: montserrat-semi;
+}
+
+.search-item .search input{
+	-webkit-appearance: none;
+    display: block;
+    width: 100%;
+    padding: 1.0rem 3.0rem;
+    font: inherit;
+    background: rgb(234, 235, 236);
+    border-radius: 0.5rem;
+    border-width: 0px;
+    border-style: initial;
+    border-color: initial;
+    border-image: initial;
+    outline: none;
+}
+
+/* detail items */
+.image-item {
+    width: 460px!important;
+    height: 261px!important;
+    border-radius: 5px;
+}
+
 @media (max-width: 1200px) {
     .text-auth {
         text-align: left !important;
@@ -342,7 +441,12 @@ footer {
 /*End Min 1200*/
 
 
-@media (max-width: 1000px) {}
+@media (max-width: 1000px) {
+    .costum-card-img {
+        margin: 0px !important;
+        padding: 10px !important;
+    }
+}
 
 /*End Min 1000*/
 
@@ -350,7 +454,12 @@ footer {
 
 /*End Min 991*/
 
-@media (max-width: 767px) {}
+@media (max-width: 767px) {
+    .costum-card-img {
+        width: 490px !important;
+        height: 300px !important;
+    }
+}
 
 /*End Max 767*/
 
@@ -366,6 +475,11 @@ footer {
 
     .custom-nav-brand {
         margin-right: 0px !important;
+    }
+    .costum-card-img {
+        width: 430px !important;
+        height: 300px !important;
+        margin-right: 3px !important;
     }
 }
 

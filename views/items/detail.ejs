@@ -1,6 +1,9 @@
 <div>
-    <%= data.name %></h1>
+    <img src="/uploads/<%= data.image %>" class="image-item mb-3">
+    <h2><%= data.name %></h2>
+    <p><%= data.description %> </p>
 </div>
+
 <form data-target="/item/buy/<%= data.id %>" id="buy-form" onsubmit="return false;">
     <input type="hidden" name="image" value="<%= data.image %>">
     <input type="hidden" value="<%= balance.id %>" name="balanceId">
@@ -13,7 +16,8 @@
     <% } %>
 </form>
 <script>
-    $(document).on("submit", "#buy-form", function () {
+    $(document).on("submit", "#buy-form", function (e) {
+        e.preventDefault();
         $.ajax({
             url: $(this).data("target"),
             type: "POST",
@@ -35,15 +39,15 @@
                 toastAlert("success", response.message);
                 $("#withdraw-form").trigger("reset");
                 formModal.hide();
-                items()
                 balanceBox()
+                items()
             },
             error: function (reject) {
                 $("button").attr("disabled", false);
                 toastAlert("error", "Terjadi kesalahan pada server");
                 formModal.hide();
-                items()
                 balanceBox()                
+                items()
             }
         })
     })

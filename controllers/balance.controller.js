@@ -39,32 +39,33 @@ module.exports = {
         const {id} = req.params;
         const balance = req.body['balance']
         const amount = req.body['amount'].replace(".","")
-        if(balance < amount){
-            return res.json({
-                "status_code": 400,
-                "message": "Saldo Tidak Mencukupi",
-                "data": null
-            })
-        }
         const updateBalance = parseInt(balance) - parseInt(amount)
         try{
-            const { data, error } = await supabase
-            .from('balance')
-            .update({ amount: updateBalance })
-            .eq('id', id)
-
-            if(error){
-                res.json({
+            if(balance < amount){
+                return res.json({
                     "status_code": 400,
-                    "message": "Gagal Mengambil Uang",
-                    "errors": error
+                    "message": "Saldo Tidak Mencukupi",
+                    "data": null
                 })
             }else{
-                res.json({
-                    "status_code": 200,
-                    "message": "Berhasil Mengambil Uang",
-                    "data": data
-                })
+                const { data, error } = await supabase
+                .from('balance')
+                .update({ amount: updateBalance })
+                .eq('id', id)
+
+                if(error){
+                    res.json({
+                        "status_code": 400,
+                        "message": "Gagal Mengambil Uang",
+                        "errors": error
+                    })
+                }else{
+                    res.json({
+                        "status_code": 200,
+                        "message": "Berhasil Mengambil Uang",
+                        "data": data
+                    })
+                }
             }
         }catch(error){
             res.json({

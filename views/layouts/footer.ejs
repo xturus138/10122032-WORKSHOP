@@ -15,7 +15,7 @@
 <script src="/js/currency.js"></script>
 <script src="/js/moment.js"></script>
 <script>
-
+    moment.locale('id')
     function truncateString(yourString, maxLength) {
         const index = yourString.indexOf(" ", maxLength);
         return index === -1 ? yourString : yourString.substring(0, index)
@@ -40,9 +40,9 @@
         $.ajax({
             url: url,
             type: "GET",
-            success: function (res) {
+            success: function (response) {
                 $("[data-modal-title]").text(modalTitle);
-                $("[data-modal-body]").html(res);
+                $("[data-modal-body]").html(response);
                 if(title[type] == 'item') {
                     $(".modal-header").css('display', 'none')
                 }
@@ -60,7 +60,7 @@
         $.ajax({
             url: "/logout",
             type: "GET",
-            beforeSend: function () {
+            beforesponseend: function () {
                 toastAlert("info", "Mencoba Keluar");
             },
             success: function () {
@@ -78,11 +78,11 @@
         $.ajax({
             type: 'get',
             url: 'item',
-            success: function (res) {
+            success: function (response) {
                 $('.list').show();
                 $('.loading').hide();
-                if (res.status_code == 200) {
-                    var kantinList = res.data;
+                if (response.status_code == 200) {
+                    var kantinList = response.data;
                     let kantinLi = '';
                     if(kantinList.length > 0 ){
                         kantinList.forEach(items => $('#kantin').html(kantinLi += `<div class="col-md-4">
@@ -91,12 +91,11 @@
                                 <div class="card-body">
                                     <span>${items.name}</span>
                                     <div class="info">
-                                        <span class="datetime">${truncateString(moment((items.created_at)).format('LLL'),15)}</span>
+                                        <span class="datetime">${moment((items.created_at)).format('MMMM Do YYYY, HH:mm')}</span>
                                     </div>
                                     <div>
                                         <span class="price">Rp `+addCommas((items.price))+`</span>
                                     </div>
-                                    <p>${truncateString(items.description,62)}</p>
                                 </div>
                             </div>
                         </div>`));
@@ -109,7 +108,9 @@
             },
             error: function () {
                 $('.list').show();
-                $('#kantin')
+                $('#kantin').html(`<div class="col-md-12 text-center">
+                            <span>Tidak ada item</span>
+                        </div>`);                        
                 $('.loading').hide();
             }
         });
@@ -120,9 +121,9 @@
         $.ajax({
             type: 'get',
             url: '/balance/getBalance',
-            success: function (res) {
-                if (res.status_code == 200) {
-                    var balance = res.data;
+            success: function (response) {
+                if (response.status_code == 200) {
+                    var balance = response.data;
                     $('#balance-box').html(`<button onclick="openForm('/balance/`+balance.id+`', 'balance')" 
                         class="btn-auth outline-primary">Saldo Box : Rp `+addCommas((balance.amount))+`
                     </button>`);
@@ -135,8 +136,6 @@
     }
     balanceBox()
 
-
-    
     $(document).on("input", ".numeric", function() {
         this.value = this.value.replace(/\D/g,'');
     });
@@ -145,7 +144,91 @@
         this.value = addCommas(this.value)
     });
 
+    $(document).on("change","#filter", function(){
+        var filter = $(this).val();
+            $.ajax({
+                type: 'get',
+                url: 'itemFilter?filter='+filter,
+                success: function (response) {
+                    if (response.status_code == 200) {
+                        var kantinList = response.data;
+                        let kantinLi = '';
+                        if(kantinList.length > 0 ){
+                            kantinList.forEach(items => $('#kantin').html(kantinLi += `<div class="col-md-4">
+                                <div class="costum-card-list">
+                                    <a onclick="openForm('/item/detail/`+items.id+`','item')" ><img class="costum-card-img" src="/uploads/${items.image}"></a>
+                                    <div class="card-body">
+                                        <span>${items.name}</span>
+                                        <div class="info">
+                                            <span class="datetime">${moment((items.created_at)).format('MMMM Do YYYY, HH:mm')}</span>
+                                        </div>
+                                        <div>
+                                            <span class="price">Rp `+addCommas((items.price))+`</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>`));
+                        }else{
+                            $('#kantin').html(`<div class="col-md-12 text-center">
+                                <span>Tidak ada item</span>
+                            </div>`);                        
+                        }
+                        toastAlert("success", response.message);
+                    }
+                },
+                error: function () {
+                    $('#kantin').html(`<div class="col-md-12 text-center">
+                            <span>Tidak ada item</span>
+                    </div>`);                        
+                }
+            });
+    });
+
+    $('.search_item').keypress(function (e) {   
+        if (e.which == 13) {
+            e.preventDefault();
+            console.log($(this).val())
+            $.ajax({
+                url: "/item?search_item="+$(this).val(),
+                type: "get",
+                success: function (response) {
+                    if (response.status_code == 200) {
+                        var kantinList = response.data;
+                        let kantinLi = '';
+                        if(kantinList.length > 0 ){
+                            kantinList.forEach(items => $('#kantin').html(kantinLi += `<div class="col-md-4">
+                                <div class="costum-card-list">
+                                    <a onclick="openForm('/item/detail/`+items.id+`','item')" ><img class="costum-card-img" src="/uploads/${items.image}"></a>
+                                    <div class="card-body">
+                                        <span>${items.name}</span>
+                                        <div class="info">
+                                            <span class="datetime">${moment((items.created_at)).format('MMMM Do YYYY, HH:mm')}</span>
+                                        </div>
+                                        <div>
+                                            <span class="price">Rp `+addCommas((items.price))+`</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>`));
+                        }else{
+                            $('#kantin').html(`<div class="col-md-12 text-center">
+                                <span>Tidak ada item</span>
+                            </div>`);                        
+                        }
+                        toastAlert("success", response.message);
+                    }
+                },
+                error: function () {
+                    $('#kantin').html(`<div class="col-md-12 text-center">
+                            <span>Tidak ada item</span>
+                    </div>`);                        
+                }
+            })
+        }
+    })
+
 </script>
 </body>
-
 </html>

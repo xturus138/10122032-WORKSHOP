@@ -26,6 +26,7 @@ router.get('/register',auth,registerController.index)
 router.post('/register',registerController.register)
 
 router.get('/item',itemController.getItem)
+router.get('/itemFilter',itemController.getItemFilter)
 router.get('/item/detail/:id',itemController.detail)
 router.post('/item/buy/:id',itemController.buy)
 router.get('/item/create', itemController.create)
