@@ -26,7 +26,7 @@ module.exports = {
                 const { data: items,error } = await supabase
                     .from('items')
                     .select('id,name,price,image,description,created_at')
-                    .like('name', '%'+search+'%')
+                    .ilike('name', '%'+search+'%')
                 if(error){
                     res.json({
                         "status_code": 400,
