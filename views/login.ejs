@@ -83,12 +83,14 @@
                     } else if (res.status_code == 200) {
                         $("button").attr("disabled", true);
                         toastAlert("success", res.message);
-                        window.location.replace('/');
+                        setTimeout(function () {
+                            window.location.href = "/";
+                        }, 1000);
                     }
                 },
                 error: function (reject) {
                     $("button").attr("disabled", false);
-                    toastAlert("error", "An error occurred on the server");
+                    toastAlert("error", "Terjadi kesalahan pada server");
                 }
             })
         })

@@ -67,7 +67,7 @@
                 var drEvent = $('.dropify').dropify()
             },
             error: function (reject) {
-                toastAlert("error", "An error occurred on the server");
+                toastAlert("error", "Terjadi kesalahan pada server");
                 console.log(reject)
             }
         })
@@ -77,11 +77,16 @@
         $.ajax({
             url: "/logout",
             type: "GET",
-            beforesponseend: function () {
+            beforeSend: function () {
                 toastAlert("info", "Mencoba Keluar");
             },
-            success: function () {
-                toastAlert("success", "Berhasil Keluar");
+            success: function (response) {
+                if(response.status_code == 200){
+                    toastAlert("success", response.message);
+                    setTimeout(function () {
+                        window.location.href = "/";
+                    }, 2000);
+                }
             },
             error: function (reject) {
                 console.log(reject);
