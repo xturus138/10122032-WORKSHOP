@@ -21,7 +21,6 @@ module.exports = {
     },
     addToCart : async(req,res) => {
         try{
-
             const {data : cartItem} = await supabase
                 .from('cart_item')
                 .select('id')
@@ -39,7 +38,6 @@ module.exports = {
                     .eq('student_id',req.session.user['student_id'])
 
                 if(cart.length > 0){
-
                     const {data} = await supabase
                         .from('cart_item')
                         .insert({
@@ -57,11 +55,17 @@ module.exports = {
                         .insert({
                             student_id : req.session.user['student_id']
                         })
+
+                    const {data : getCart} = await supabase
+                        .from('cart')
+                        .select('id')
+                        .eq('student_id',req.session.user['student_id'])
+    
                     await supabase
                         .from('cart_item')
                         .insert({
                             item_id : req.body.item_id,
-                            cart_id : cart[0].id
+                            cart_id : getCart[0].id
                         })
                     res.json({
                             status_code : 200,
@@ -73,7 +77,7 @@ module.exports = {
         }catch(error){
             res.json({
                 status_code : 500,
-                message : error[0].message,
+                message : "Terjadi kesalahan pada server",
                 data : null
             })
         }
@@ -133,13 +137,13 @@ module.exports = {
                 .eq('id',id)
             res.json({
                 status_code : 200,
-                message : 'Berhasil menghapus barang dari keranjang',
+                message : 'Berhasil menghapus barang',
                 data : null
             })
         }catch(error){
             res.json({
                 status_code : 500,
-                message : 'Gagal menghapus barang dari keranjang',
+                message : 'Gagal menghapus barang',
                 data : null
             })
         }

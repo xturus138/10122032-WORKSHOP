@@ -122,7 +122,7 @@ module.exports = {
                     "data": data
                 })
             }
-        }catch(err){
+        }catch(error){
                 res.json({
                     "status_code": 500,
                     "message": error,

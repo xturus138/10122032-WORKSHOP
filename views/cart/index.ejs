@@ -1,158 +1,4 @@
 <%- include('../layouts/header.ejs', {title: 'Cart'}) %>
-<style>
-
-ul{
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-
-input,
-button {
-  border: 0 none;
-  outline: 0 none;
-}
-
-img,
-.cart-module,
-.cart-labels,
-.cart-product {
-  width: 100%;
-}
-
-.cart,
-.cart-module,
-.cart-labels,
-.item,
-.price-heading,
-.cart-product,
-.product-image,
-.product-details {
-  float: left;
-}
-
-.hide {
-  display: none;
-}
-
-main {
-  clear: both;
-  font-size: 0.75rem;
-  margin: 0 auto;
-  overflow: hidden;
-  padding: 1rem 0;
-  width: 960px;
-}
-
-.cart-total-price{
-    font-weight: bold;
-    float: right;
-    margin-right: 1rem;
-    margin-bottom: 1rem;
-}
-
-.cart {
-  width: 100%;
-}
-
-.cart-module {
-  color: #111;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.3125rem;
-}
-
-.item {
-  width: 55%;
-}
-
-.remove {
-  bottom: 1.125rem;
-  float: right;
-  position: absolute;
-  right: 0;
-  text-align: right;
-  width: 45%;
-}
-
-.remove button {
-  float: none;
-}
-
-.item-heading {
-  padding-left: 4.375rem;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-.cart-product { 
-  padding: 1rem 0;
-  position: relative;
-}
-
-.product-image {
-  width: 35%;
-}
-
-.product-details {
-  width: 65%;
-}
-
-.product-details {
-  padding: 0 1.5rem;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-
-@media screen and (max-width: 640px) {
-  .item,
-  .remove {
-    width: 100%;
-  }
-  .cart-labels {
-    display: none;
-  }
-  .cart-module {
-    margin-bottom: 1rem;
-  }
-  .item {
-    margin-bottom: 1rem;
-  }
-  .product-image {
-    width: 40%;
-  }
-  .product-details {
-    width: 60%;
-  }
-  .price-heading{
-    width: 33%;
-  }
-  
-  .remove {
-    bottom: 0;
-    text-align: left;
-    margin-top: 0.75rem;
-    position: relative;
-  }
-
-}
-
-@media screen and (max-width: 960px) {
-  main {
-    width: 100%;
-  }
-  .product-details {
-    padding: 0 1rem;
-  }
-}
-  </style>
-</style>
 <div class="py-3"></div>
     <div class="container">
         <div class="d-flex mb-3">
@@ -165,10 +11,10 @@ label {
                     <div class="cart-product">
                       <div class="item">
                         <div class="product-image">
-                          <img src="/uploads/<%= cart.items.image %>" alt="Placholder Image 2" class="product-frame">
+                          <img class="cart-image" src="/uploads/<%= cart.items.image %>" alt="Placholder Image 2" class="product-frame">
                         </div>
                         <div class="product-details">
-                          <h1><%= cart.items.name %></h1>
+                          <h1 class="cart-item-name"><%= cart.items.name %></h1>
                           <p><%= cart.items.description %></p>
                         </div>
                       </div>
@@ -185,6 +31,7 @@ label {
                 <% }); %>
             </div>
             <div>
+
             <% if(cartItems.length > 0) { %>
                 <div class="row">
                     <div class="col-md-12">
