@@ -68,25 +68,6 @@
         })
     }
 
-<<<<<<< HEAD
-=======
-    function logout() {
-        $.ajax({
-            url: "/logout",
-            type: "GET",
-            beforeSend: function () {
-                toastAlert("info", "Mencoba Keluar");
-            },
-            success: function () {
-                window.location.replace = "/logout";
-            },
-            error: function (reject) {
-                console.log(reject);
-            }
-        })
-    }
-
->>>>>>> 645de8c6b89165328a7088c378be288ad34850ad
     function balanceBox(){
         $.ajax({
             type: 'get',
