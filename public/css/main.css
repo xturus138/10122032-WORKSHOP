@@ -468,10 +468,15 @@ button {
   float: left;
 }
 .cart-item-name{
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 13px;
+  color: #111;
   margin: 0;
   padding: 0;
+}
+.cart-item-price{
+    font-size: 14px;
+    font-weight: bold;
+    color: #111;
 }
 
 main {

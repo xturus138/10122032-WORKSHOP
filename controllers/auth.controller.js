@@ -11,10 +11,19 @@ module.exports = {
             student_id : req.body['student_id'],
             password   : req.body['password']
         }
-            const { data } = await supabase
+            const { data,error } = await supabase
                 .from('users')
                 .select('id,student_id,name,password')
                 .eq('student_id', dataLogin.student_id)
+
+                if(error){
+                    res.json({
+                        status_code : 400,
+                        message : 'Gagal login',
+                        error : error
+                    })
+                }
+                
                 if(data.length > 0){
                     const user = data[0]
                     if(bcrypt.compareSync(dataLogin.password, user.password)){

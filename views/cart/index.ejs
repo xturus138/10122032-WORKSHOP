@@ -18,7 +18,7 @@
                           <p><%= cart.items.description %></p>
                         </div>
                       </div>
-                      <div>Rp <%= cart.items.price %></div>
+                      <div class="cart-item-price">Rp <%= new Intl.NumberFormat(['ban', 'id']).format(cart.items.price).replace(',','.') %></div>
                       <div class="remove">
                         <a onclick="deleteAlert('/cart/delete/<%= cart.id %> ')" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
                       </div>
@@ -63,6 +63,8 @@
         });
         $('#cartPrice').text(addCommas(totalPrice));
         $('#totalPrice').val(totalPrice);
+        
+        
     });
 
     $(document).on('submit','#cart',function(e){

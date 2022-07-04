@@ -21,34 +21,39 @@ module.exports = {
     },
     addToCart : async(req,res) => {
         try{
-            const {data : cartItem} = await supabase
-                .from('cart_item')
-                .select('id')
-                .eq('item_id',req.body.item_id)
-
-            if(cartItem.length > 0){
-                res.json({
-                    status : 'error',
-                    message : 'Barang sudah ada di keranjang'
-                })
-            }else{
+          
+            
                 const {data : cart} = await supabase
                     .from('cart')
                     .select('id')
                     .eq('student_id',req.session.user['student_id'])
-
+                                        
                 if(cart.length > 0){
-                    const {data} = await supabase
+                    const {data : cartItem} = await supabase
+                    .from('cart_item')
+                        .select('id')
+                        .eq('item_id',req.body.item_id)
+                        .eq('cart_id',cart[0].id)
+                    
+                    if(cartItem.length > 0 ){
+                        res.json({
+                            status_code : 400,
+                            message : 'Barang Sudah Ada di Keranjang',
+                            data : null
+                        })
+                    }else{
+                        const {data} = await supabase
                         .from('cart_item')
                         .insert({
                             item_id : req.body.item_id,
                             cart_id : cart[0].id
                         })
-                    res.json({
+                        res.json({
                             status_code : 200,
                             message : 'Berhasil menambah keranjang',
                             data : data
-                    })
+                        })
+                    }
                 }else{
                     const {data : data } = await supabase
                         .from('cart')
@@ -60,20 +65,33 @@ module.exports = {
                         .from('cart')
                         .select('id')
                         .eq('student_id',req.session.user['student_id'])
-    
-                    await supabase
+
+                    const {data : cartItem} = await supabase
+                        .from('cart_item')
+                            .select('id')
+                            .eq('item_id',req.body.item_id)
+                            .eq('cart_id',getCart[0].id)
+                        
+                    if(cartItem.length > 0 ){
+                        res.json({
+                            status_code : 400,
+                            message : 'Barang Sudah Ada di Keranjang',
+                            data : null
+                        })
+                    }else{
+                        await supabase
                         .from('cart_item')
                         .insert({
                             item_id : req.body.item_id,
                             cart_id : getCart[0].id
                         })
-                    res.json({
+                        res.json({
                             status_code : 200,
                             message : 'Berhasil menambah keranjang',
                             data : data
                         })
+                    }
                 }
-            }
         }catch(error){
             res.json({
                 status_code : 500,
