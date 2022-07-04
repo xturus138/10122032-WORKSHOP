@@ -1,23 +1,6 @@
 <%- include('../layouts/header.ejs', {title: 'Cart'}) %>
 <style>
 
-    @charset "utf-8";
-
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600);
-
-html,
-html a {
-  -webkit-font-smoothing: antialiased;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
-}
-
-body {
-  background-color: #fff;
-  color: #666;
-  font-family: 'Open Sans', sans-serif;
-  margin: 0 auto;
-}
-
 ul{
     list-style: none;
     padding: 0;
@@ -69,10 +52,6 @@ img,
   float: left;
 }
 
-.price-heading:before,
-.subtotal:before,
-.subtotal-value:before,
-.total-value:before,
 
 .hide {
   display: none;
@@ -85,6 +64,13 @@ main {
   overflow: hidden;
   padding: 1rem 0;
   width: 960px;
+}
+
+.cart-total-price{
+    font-weight: bold;
+    float: right;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
 }
 
 .cart {
@@ -122,6 +108,11 @@ label {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+.cart-product { 
+  padding: 1rem 0;
+  position: relative;
 }
 
 .product-image {
