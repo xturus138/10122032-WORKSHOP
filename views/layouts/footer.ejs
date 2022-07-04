@@ -110,6 +110,32 @@
         });
     }
 
+    function addToCart(item_id){
+        var item_id = item_id
+        $.ajax({
+            url : '/cart/addToCart',
+            type : 'post',
+            data : {"item_id" : item_id},
+            dataType : 'json',
+            beforeSend : function (){
+                $('.btn-add-to-cart').attr('disabled', true);
+            },
+            success: function(response){
+                if(response.status_code == 200){
+                    toastAlert("success", response.message);
+                    $('.btn-add-to-cart').attr('disabled', false);
+                }else{
+                    toastAlert("error", response.message);
+                    $('.btn-add-to-cart').attr('disabled', false);
+                }
+            },
+            error: function(){
+                $('.btn-add-to-cart').attr('disabled', false);
+                toastAlert("error", "Terjadi kesalahan pada server");
+            }
+        })
+    }
+
     $(document).on("change","#filter", function(){
         var filter = $(this).val();
             $.ajax({

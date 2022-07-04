@@ -76,31 +76,6 @@
 </div>
 <%- include('./components/loading'); %>
 <script>
-    function addToCart(item_id){
-        var item_id = item_id
-        $.ajax({
-            url : '/cart/addToCart',
-            type : 'post',
-            data : {"item_id" : item_id},
-            dataType : 'json',
-            beforeSend : function (){
-                $('.btn-add-to-cart').attr('disabled', true);
-            },
-            success: function(response){
-                if(response.status_code == 200){
-                    toastAlert("success", response.message);
-                    $('.btn-add-to-cart').attr('disabled', false);
-                }else{
-                    toastAlert("error", response.message);
-                    $('.btn-add-to-cart').attr('disabled', false);
-                }
-            },
-            error: function(){
-                $('.btn-add-to-cart').attr('disabled', false);
-                toastAlert("error", "Terjadi kesalahan pada server");
-            }
-        })
-    }
     function items() {
         $('.loading').show();
         $('.list').hide();
@@ -125,9 +100,9 @@
                                     <div class="mb-3">
                                         <span class="price">Rp `+addCommas((items.price))+`</span>
                                     </div>
-                                    
+                                    <% if(loggedIn) { %>
                                         <a onClick="addToCart('`+items.id+`')" class="btn-auth outline-primary btn-add-to-cart">+ Keranjang</a>
-                                    
+                                    <% } %>
                                 </div>
                             </div>
                         </div>`));
