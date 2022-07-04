@@ -10,8 +10,6 @@
     </div>
 </div>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/sweetalert2.all.min.js"></script>
-<script src="/js/alert.js"></script>
 <script src="/js/currency.js"></script>
 <script src="/js/moment.js"></script>
 <script src="/js/dropify.js"></script>
@@ -83,7 +81,7 @@
                     toastAlert("success", response.message);
                     setTimeout(function () {
                         window.location.href = "/";
-                    }, 2000);
+                    }, 1000);
                 }
             },
             error: function (reject) {
