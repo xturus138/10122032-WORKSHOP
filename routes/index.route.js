@@ -38,8 +38,8 @@ router.get('/cart/delete/:id',auth,cartController.delete)
 router.post('/cart/checkout',cartController.checkout)
 router.post('/cart/addToCart',cartController.addToCart)
 
-router.get('/balance/getBalance',auth,balanceController.getBalance)
-router.get('/balance/:id',auth,balanceController.index)
+router.get('/balance/getBalance',balanceController.getBalance)
+router.get('/balance/:id',balanceController.index)
 router.post('/balance/withdraw/:id',balanceController.withdraw)
 router.post('/balance/deposit/:id',balanceController.deposit)
 

@@ -73,7 +73,7 @@ module.exports = {
         }catch(error){
             res.json({
                 status_code : 500,
-                message : error,
+                message : error[0].message,
                 data : null
             })
         }
