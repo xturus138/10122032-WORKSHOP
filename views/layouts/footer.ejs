@@ -33,7 +33,6 @@
     }
 
     var formModal;
-
     document.querySelector("[data-form-modal]").addEventListener("hidden.bs.modal", function () {
         document.querySelector("[data-modal-title]").innerText = "";
         document.querySelector("[data-modal-body]").innerHTML = "";
@@ -65,22 +64,6 @@
             error: function (reject) {
                 toastAlert("error", "Terjadi kesalahan pada server");
                 console.log(reject)
-            }
-        })
-    }
-
-    function logout() {
-        $.ajax({
-            url: "/logout",
-            type: "GET",
-            beforeSend: function () {
-                toastAlert("info", "Mencoba Keluar");
-            },
-            success: function () {
-                window.location.replace = "/";
-            },
-            error: function (reject) {
-                console.log(reject);
             }
         })
     }
@@ -221,6 +204,7 @@
 
     // items
     $(document).on("submit", "#create-form", function (e) {
+        var drEvent = $('.dropify').dropify();
         e.preventDefault();
         $.ajax({
             url: "item/store",
@@ -236,16 +220,21 @@
                 $("button").attr("disabled", false);
                 if (response.status_code == 500) return toastAlert("error", response.message);
                 if (response.status_code == 400) return toastAlert("error", response.message);
-
                 toastAlert("success", response.message);
                 $("#create-form").trigger("reset");
                 formModal.hide();
+                drEvent = drEvent.data('dropify');
+                drEvent.resetPreview(); 
+                drEvent.clearElement(); 
                 items()
             },
             error: function (reject) {
                 $("button").attr("disabled", false);
                 toastAlert("error", "Terjadi kesalahan pada server");
                 formModal.hide();
+                drEvent = drEvent.data('dropify');
+                drEvent.resetPreview(); 
+                drEvent.clearElement(); 
                 items()
             }
         })

@@ -101,33 +101,41 @@ module.exports = {
     store  : async (req,res) => {
         const price = req.body['price'].replace(/[^0-9]/g, '')
         try{
-            const { data,error } = await supabase
-            .from('items')
-            .insert([{
-                name : req.body['name'],
-                image : req.file['filename'],
-                description : req.body['description'],
-                price : price,
-            }])
-            if(error){
+            if(req.file == null){
                 res.json({
-                    "status_code": 400,
-                    "message": "Gagal Menambah Barang",
-                    "errors": error
+                    "status_code" : 400,
+                    "message" : "Gambar Tidak Boleh Kosong",
+                    "data" : null
                 })
             }else{
-                res.json({
-                    "status_code": 200,
-                    "message": "Berhasil Menambah Barang",
-                    "data": data
-                })
+                const { data,error } = await supabase
+                .from('items')
+                .insert([{
+                    name : req.body['name'],
+                    image : req.file['filename'],
+                    description : req.body['description'],
+                    price : price,
+                }])
+                if(error){
+                    res.json({
+                        "status_code": 400,
+                        "message": "Gagal Menambah Barang",
+                        "errors": error
+                    })
+                }else{
+                    res.json({
+                        "status_code": 200,
+                        "message": "Berhasil Menambah Barang",
+                        "data": data
+                    })
+                }
             }
         }catch(error){
-                res.json({
-                    "status_code": 500,
-                    "message": error,
-                    "data": null
-                })
+            res.json({
+                "status_code": 500,
+                "message": "Gagal Menambah Barang",
+                "data": null
+            })
         }
     },
     detail : async (req,res) => {
