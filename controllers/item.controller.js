@@ -1,6 +1,5 @@
 const supabase = require('../database')
 const fs = require("fs");
-
 module.exports = {
     getItem : async (req, res) => {
         const search = req.query.search_item
@@ -8,7 +7,7 @@ module.exports = {
             if(search == null){
                 const { data: items, error } = await supabase
                     .from('items')
-                    .select('id,name,price,image,description,created_at')
+                    .select('*')
                 if(error){
                     res.json({
                         "status_code": 400,
@@ -24,8 +23,8 @@ module.exports = {
                 }
             }else{
                 const { data: items,error } = await supabase
-                    .from('items')
-                    .select('id,name,price,image,description,created_at')
+                    .from ('items')
+                    .select('*')
                     .ilike('name', '%'+search+'%')
                 if(error){
                     res.json({
@@ -55,7 +54,7 @@ module.exports = {
         if(filter == 'terlama'){
                 const {data,error} = await supabase
                     .from('items')
-                    .select('id,name,price,image,description,created_at')
+                    .select('*')
                     .order('created_at', {ascending: true})
                 res.json({
                     "status_code": error != true ? 200 : 400,
@@ -65,7 +64,7 @@ module.exports = {
         }else if(filter == 'terbaru'){
                 const {data,error} = await supabase
                     .from('items')
-                    .select('id,name,price,image,description,created_at')
+                    .select('*')
                     .order('created_at', {ascending: false})
                 res.json({
                     "status_code": error != true ? 200 : 400,
@@ -75,7 +74,7 @@ module.exports = {
         }else if(filter == 'a-z'){
                 const {data,error} = await supabase
                     .from('items')
-                    .select('id,name,price,image,description,created_at')
+                    .select('*')
                     .order('name', {ascending: true})
 
                 res.json({
@@ -86,7 +85,7 @@ module.exports = {
         }else{
                 const {data,error} = await supabase
                     .from('items')
-                    .select('id,name,price,image,description,created_at')
+                    .select('*')
                     .order('name', {ascending: false})
 
                 res.json({
