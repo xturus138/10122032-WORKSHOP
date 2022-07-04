@@ -51,6 +51,10 @@ module.exports = {
     },
     logout : async (req,res) => {
         req.session.destroy();
+<<<<<<< HEAD
         return res.redirect('/login')
+=======
+        return res.redirect('/logout')
+>>>>>>> 645de8c6b89165328a7088c378be288ad34850ad
     }
 }
