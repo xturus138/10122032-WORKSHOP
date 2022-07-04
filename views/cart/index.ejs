@@ -1,48 +1,239 @@
 <%- include('../layouts/header.ejs', {title: 'Cart'}) %>
+<style>
+
+    @charset "utf-8";
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600);
+
+html,
+html a {
+  -webkit-font-smoothing: antialiased;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+}
+
+body {
+  background-color: #fff;
+  color: #666;
+  font-family: 'Open Sans', sans-serif;
+  margin: 0 auto;
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+  border: 0 none;
+  outline: 0;
+  text-decoration: none;
+}
+
+strong {
+  font-weight: bold;
+}
+
+p {
+  margin: 0.75rem 0 0;
+}
+
+h1 {
+  font-size: 0.75rem;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+}
+
+input,
+button {
+  border: 0 none;
+  outline: 0 none;
+}
+
+img,
+.cart-module,
+.cart-labels,
+.cart-product {
+  width: 100%;
+}
+
+.cart,
+.cart-module,
+.cart-labels,
+.item,
+.price-heading,
+.cart-product,
+.product-image,
+.product-details {
+  float: left;
+}
+
+.price-heading:before,
+.subtotal:before,
+.subtotal-value:before,
+.total-value:before,
+
+.hide {
+  display: none;
+}
+
+main {
+  clear: both;
+  font-size: 0.75rem;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 1rem 0;
+  width: 960px;
+}
+
+.cart {
+  width: 100%;
+}
+
+.cart-module {
+  color: #111;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.3125rem;
+}
+
+.item {
+  width: 55%;
+}
+
+.remove {
+  bottom: 1.125rem;
+  float: right;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  width: 45%;
+}
+
+.remove button {
+  float: none;
+}
+
+.item-heading {
+  padding-left: 4.375rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.product-image {
+  width: 35%;
+}
+
+.product-details {
+  width: 65%;
+}
+
+.product-details {
+  padding: 0 1.5rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+
+@media screen and (max-width: 640px) {
+  .item,
+  .remove {
+    width: 100%;
+  }
+  .cart-labels {
+    display: none;
+  }
+  .cart-module {
+    margin-bottom: 1rem;
+  }
+  .item {
+    margin-bottom: 1rem;
+  }
+  .product-image {
+    width: 40%;
+  }
+  .product-details {
+    width: 60%;
+  }
+  .price-heading{
+    width: 33%;
+  }
+  
+  .remove {
+    bottom: 0;
+    text-align: left;
+    margin-top: 0.75rem;
+    position: relative;
+  }
+
+}
+
+@media screen and (max-width: 960px) {
+  main {
+    width: 100%;
+  }
+  .product-details {
+    padding: 0 1rem;
+  }
+}
+  </style>
+</style>
 <div class="py-3"></div>
     <div class="container">
         <div class="d-flex mb-3">
             <span class="title">Keranjang Belanja</span>
         </div>
         <form id="cart" action="/cart/checkout" onsubmit="return false;">
-            <div class="row">
+            <div class="row mb-3">
                 <% cartItems.forEach(cart => { %>   
-                <div class="col-md-12">
-                    <div class="cart">
-                        <img src="/uploads/<%= cart.items.image %>" class="cart-image img-fluid" width="100px">
-                        <%= cart.items.name %>
-                        <input type="hidden" class="form-control" value="<%= cart.items.id %>" name="item_id[]">
-                        <input type="hidden" value="<%= cart.items.image %>" name="image[]">
-                        <input type="hidden" value="<%= cart.items.price %>" class="price">                    
-                        <a href="#" onclick="deleteAlert('/cart/delete/<%= cart.id %> ')" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                <div class="cart">
+                    <div class="cart-product">
+                      <div class="item">
+                        <div class="product-image">
+                          <img src="/uploads/<%= cart.items.image %>" alt="Placholder Image 2" class="product-frame">
+                        </div>
+                        <div class="product-details">
+                          <h1><%= cart.items.name %></h1>
+                          <p><%= cart.items.description %></p>
+                        </div>
+                      </div>
+                      <div>Rp <%= cart.items.price %></div>
+                      <div class="remove">
+                        <a onclick="deleteAlert('/cart/delete/<%= cart.id %> ')" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                      </div>
                     </div>
-                    <div class="line"></div>
-                </div>
+                  </div>
+                  <div class="line"></div>
+                  <input type="hidden" class="form-control" value="<%= cart.items.id %>" name="item_id[]">
+                  <input type="hidden" value="<%= cart.items.image %>" name="image[]">
+                  <input type="hidden" value="<%= cart.items.price %>" class="price">                    
                 <% }); %>
             </div>
             <div>
             <% if(cartItems.length > 0) { %>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="cart">
-                            <span class="cart-title">Total</span>
+                        <div class="cart-total-price">
+                            <span class="cart-title">Total Rp </span>
                             <span class="cart-price" id="cartPrice"></span>
                         </div>
                     </div>
-                <input type="hidden" class="form-control" id="totalPrice" name="total_price" readonly="">
-            </div>
-            <div class="d-flex flex-row-reverse">
+                    <input type="hidden" class="form-control" id="totalPrice" name="total_price" readonly="">
+                </div>
+            <div class="d-flex flex-row-reverse mb-3">
                 <button class="btn-auth color-primary">Pembayaran</button>
             </div>
             <% }else{ %>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="cart">
-                            <span class="cart-title">Keranjang Kosong</span>
-                        </div>
-                    </div>
+                <div class="col-md-12 text-center">
+                    <span>Tidak ada item</span>
                 </div>
             <% } %>
+            
 
         </form>
 </div>

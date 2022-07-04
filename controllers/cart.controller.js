@@ -107,7 +107,9 @@ module.exports = {
                     .eq('id',item)
             })
             image.forEach(function(filepath){
-                fs.unlinkSync('./public/uploads/' + filepath)
+                if(filepath != null ){
+                    fs.unlinkSync('./public/uploads/' + filepath)
+                }
             })
             res.json({
                 status_code : 200,

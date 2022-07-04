@@ -36,7 +36,6 @@ a:visited {
     text-decoration: none;
 }
 
-
 a {
     margin: 0;
     padding: 0;
@@ -49,6 +48,13 @@ a {
 a:hover {
     cursor:pointer;
 }
+
+button:disabled,
+button[disabled]{
+    cursor: not-allowed;
+    pointer-events: all !important;
+}
+
 
 h1, h2, h3, h4, h5, h6 {
     color: #454360;

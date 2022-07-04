@@ -174,7 +174,9 @@ module.exports = {
                     "data": data
                 })
             }
-        fs.unlinkSync('./public/uploads/' + req.body['image'])
+            if(req.body['image'] != null ){
+                fs.unlinkSync('./public/uploads/' + req.body['image'])
+            }
         }catch(error){
             res.json({
                 "status_code": 500,
