@@ -1,0 +1,115 @@
+<%- include('../layouts/header.ejs', {title: 'Cart'}) %>
+<div class="py-3"></div>
+    <div class="container">
+        <div class="d-flex mb-3">
+            <span class="title">Keranjang Belanja</span>
+        </div>
+        <form id="cart" action="/cart/checkout" onsubmit="return false;">
+            <div class="row">
+                <% cartItems.forEach(cart => { %>   
+                <div class="col-md-12">
+                    <div class="cart">
+                        <img src="/uploads/<%= cart.items.image %>" class="cart-image img-fluid" width="100px">
+                        <%= cart.items.name %>
+                        <input type="hidden" class="form-control" value="<%= cart.items.id %>" name="item_id[]">
+                        <input type="hidden" value="<%= cart.items.image %>" name="image[]">
+                        <input type="hidden" value="<%= cart.items.price %>" class="price">                    
+                        <a href="#" onclick="deleteAlert('/cart/delete/<%= cart.id %> ')" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                    </div>
+                    <div class="line"></div>
+                </div>
+                <% }); %>
+            </div>
+            <div>
+            <% if(cartItems.length > 0) { %>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="cart">
+                            <span class="cart-title">Total</span>
+                            <span class="cart-price" id="cartPrice"></span>
+                        </div>
+                    </div>
+                <input type="hidden" class="form-control" id="totalPrice" name="total_price" readonly="">
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <button class="btn-auth color-primary">Pembayaran</button>
+            </div>
+            <% }else{ %>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="cart">
+                            <span class="cart-title">Keranjang Kosong</span>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+
+        </form>
+</div>
+<%- include('../layouts/footer.ejs') %>
+<script>
+    $(document).ready(function() {
+        var totalPrice = 0;
+        $('.price').each(function() {
+            totalPrice += parseInt($(this).val());
+        });
+        $('#cartPrice').text(addCommas(totalPrice));
+        $('#totalPrice').val(totalPrice);
+    });
+
+    $(document).on('submit','#cart',function(e){
+        e.preventDefault();
+        var form = $(this);
+        $.ajax({
+            url: form.attr('action'),
+            type: 'POST',
+            data: form.serialize(),
+            beforeSend: function() {
+                $('button').attr('disabled', true);
+            },
+            success: function(response) {
+                if (response.status_code == 500) return toastAlert("error", response.message);
+                if (response.status_code == 200) {
+                    toastAlert('success', response.message);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                }
+                $('button').attr('disabled', false);
+            },
+            failed : function(response){
+                toastAlert('error', response.message);
+                $('button').attr('disabled', false);
+            }
+        });
+    });
+
+    function deleteAlert(url) {
+        Swal.fire({
+          title: 'Apakah anda yakin menghapus barang ini?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Hapus',
+          cancelButtonText: 'Batal'
+        }).then(function(result) {
+          if (!result.isConfirmed) return;
+          $.ajax({
+            url: url,
+            type: "GET",
+            success: function(response) {
+                if (response.status_code == 500) return toastAlert("error", response.message);
+                toastAlert("success", response.message);
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            },
+            error: function(reject) {
+                toastAlert("error","Terjadi kesalahan pada server");
+            }
+          })
+        })
+      }
+
+</script>

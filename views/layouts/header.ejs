@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/sweetalert2.css">
 	<link rel="stylesheet" href="/css/dropify.css">
+	<link rel="stylesheet" href="/css/icons.min.css">
 	<script src="/js/jquery-3.6.0.min.js"></script>
 	<script src="/js/sweetalert2.all.min.js"></script>
 	<script>
@@ -33,6 +34,7 @@
 		 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<% if(loggedIn) { %>
 				<div class="col-xl-11 text-auth">
+					<a href="/cart/<%= studentId %>" class="btn-auth outline-primary">Keranjang</a>
 					<span id="balance-box"></span>
 					<span class="dropdown">
 						<a class="btn-auth dropdown-toggle outline-primary" href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">ID Siswa : <%= studentId %> </a>

@@ -428,7 +428,13 @@ footer {
     padding: 20px;
 }
 
-
+/* cart */
+.line{
+    height: 5px;
+    width: 100%;
+    background-color: var(--N50,#F3F4F5);
+    margin: 18px 0px;
+}
 @media (max-width: 1200px) {
     .text-auth {
         text-align: left !important;

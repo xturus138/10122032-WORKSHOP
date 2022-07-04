@@ -874,7 +874,7 @@
         border: 0;
         border-radius: 0.25em;
         background: initial;
-        background-color: #3085d6;
+        background-color: #095384 !important;
         color: #fff;
         font-size: 1.0625em; }
       .swal2-popup .swal2-styled.swal2-cancel {
