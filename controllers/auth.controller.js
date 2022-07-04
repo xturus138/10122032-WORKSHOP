@@ -51,10 +51,6 @@ module.exports = {
     },
     logout : async (req,res) => {
         req.session.destroy();
-        res.json({
-            "status_code": 200,
-            "message": "Berhasil Keluar",
-            "data": null
-        })
+        return res.redirect('/')
     }
 }

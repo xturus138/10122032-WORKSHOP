@@ -76,13 +76,8 @@
             beforeSend: function () {
                 toastAlert("info", "Mencoba Keluar");
             },
-            success: function (response) {
-                if(response.status_code == 200){
-                    toastAlert("success", response.message);
-                    setTimeout(function () {
-                        window.location.href = "/";
-                    }, 1000);
-                }
+            success: function () {
+                window.location.replace = "/";
             },
             error: function (reject) {
                 console.log(reject);
