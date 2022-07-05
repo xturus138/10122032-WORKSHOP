@@ -13,9 +13,8 @@ dibuat untuk seleksi Compfest Software Engineering Academy 14
 ## Arsitektur
 - **Main Framework** : Express.js
 - **Frontend** : JQuery, Bootstrap
-- **Database** : 
-   1. Postgres Database Manage By Supabase [Supabase](https://supabase.io/)
-   2. Cloudinary (Untuk Menyimpan Gambar)
+- **Database** : Postgres Database Manage By Supabase [Supabase](https://supabase.io/)
+- **Digital Asset Management : Cloudinary
 - **Hosting** : [Heroku](https://www.heroku.com/)
 
 ## Fitur
