@@ -10,11 +10,12 @@ dibuat untuk seleksi Compfest Software Engineering Academy 14
 2. Lakukan instalasi package dengan `npm install` atau `yarn`
 3. Jalankan Aplikasi dengan `npm run dev`
 
-## Arsitektur
-- **Main Framework** : Express.js
-- **Frontend** : JQuery, Bootstrap
+## Teknologi
+- **Main Framework** : ExpressJS
+- **JavaScript libraries** : JQuery, SweetAlert2, Moment.js
+- **UI Framework** : Bootstrap
 - **Database** : Postgres Database Manage By Supabase [Supabase](https://supabase.io/)
-- **Digital AssetManagement** : Cloudinary
+- **Digital Asset Management** : [Cloudinary](https://cloudinary.com) ( Untuk menyimpan gambar)
 - **Hosting** : [Heroku](https://www.heroku.com/)
 
 ## Fitur
