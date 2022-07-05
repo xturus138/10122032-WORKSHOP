@@ -6,16 +6,7 @@ const itemController = require('../controllers/item.controller')
 const balanceController = require('../controllers/balance.controller')
 const cartController = require('../controllers/cart.controller')
 const router = require('express').Router()
-const multer = require('multer')
-const storage =   multer.diskStorage({
-    destination: function (req, file, callback) {
-        callback(null, './public/uploads');
-    },
-    filename: function (req, file, callback) {
-        callback(null,Date.now() + ".png");
-    }
-});
-var upload = multer({ storage : storage})
+const upload = require('../storage')
 
 router.get('/',indexController.index)
 

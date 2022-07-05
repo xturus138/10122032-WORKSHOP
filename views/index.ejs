@@ -91,7 +91,7 @@
                     if(kantinList.length > 0 ){
                         kantinList.forEach(items => $('#kantin').html(kantinLi += `<div class="col-md-4">
                             <div class="costum-card-list">
-                                <a onclick="openForm('/item/detail/`+items.id+`','item')" ><img class="costum-card-img" src="/uploads/${items.image}"></a>
+                                <a onclick="openForm('/item/detail/`+items.id+`','item')" ><img class="costum-card-img" src="${items.image}"></a>
                                 <div class="card-body">
                                     <span>${items.name}</span>
                                     <div class="info">

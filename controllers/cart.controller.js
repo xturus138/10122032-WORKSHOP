@@ -1,5 +1,4 @@
 const supabase = require('../database')
-const fs = require('fs')
 module.exports = {
     index : async (req,res) => {
         loggedIn = req.session.loggedIn === true ? true : false
@@ -21,8 +20,6 @@ module.exports = {
     },
     addToCart : async(req,res) => {
         try{
-          
-            
                 const {data : cart} = await supabase
                     .from('cart')
                     .select('id')
@@ -101,7 +98,6 @@ module.exports = {
         }
     },
     checkout : async (req,res) => {
-        const image = req.body.image
         const {data} = await supabase 
             .from('balance')
             .select('id,amount')
@@ -127,11 +123,6 @@ module.exports = {
                     .from('items')
                     .delete()
                     .eq('id',item)
-            })
-            image.forEach(function(filepath){
-                if(filepath != null ){
-                    fs.unlinkSync('./public/uploads/' + filepath)
-                }
             })
             res.json({
                 status_code : 200,

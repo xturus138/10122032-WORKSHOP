@@ -1,5 +1,6 @@
 const supabase = require('../database')
 const fs = require("fs");
+const cloudinary = require('../cloudinary')
 module.exports = {
     getItem : async (req, res) => {
         const search = req.query.search_item
@@ -108,11 +109,18 @@ module.exports = {
                     "data" : null
                 })
             }else{
+                const uploader = async (path) => await cloudinary.upload(path,'Images')
+                const urls = []
+                const file = req.file
+                const {path} = file
+                const newPath = await uploader(path)
+                urls.push(newPath)
+                fs.unlinkSync(path)
                 const { data,error } = await supabase
                 .from('items')
                 .insert([{
                     name : req.body['name'],
-                    image : req.file['filename'],
+                    image : urls[0].url,
                     description : req.body['description'],
                     price : price,
                 }])
@@ -181,9 +189,6 @@ module.exports = {
                     "message": "Berhasil Membeli Barang",
                     "data": data
                 })
-            }
-            if(req.body['image'] != null ){
-                fs.unlinkSync('./public/uploads/' + req.body['image'])
             }
         }catch(error){
             res.json({

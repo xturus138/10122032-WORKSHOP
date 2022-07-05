@@ -5,5 +5,4 @@ const supabase = createClient(
   dbConfig.SUPABASE_URL,
   dbConfig.SUPABASE_KEY,
 )
-
 module.exports = supabase;

@@ -11,7 +11,7 @@
                     <div class="cart-product">
                       <div class="item">
                         <div class="product-image">
-                          <img class="cart-image" src="/uploads/<%= cart.items.image %>" alt="Placholder Image 2" class="product-frame">
+                          <img class="cart-image" src="<%= cart.items.image %>" alt="Placholder Image 2" class="product-frame">
                         </div>
                         <div class="product-details">
                           <h1 class="cart-item-name"><%= cart.items.name %></h1>
@@ -26,7 +26,6 @@
                   </div>
                   <div class="line"></div>
                   <input type="hidden" class="form-control" value="<%= cart.items.id %>" name="item_id[]">
-                  <input type="hidden" value="<%= cart.items.image %>" name="image[]">
                   <input type="hidden" value="<%= cart.items.price %>" class="price">                    
                 <% }); %>
             </div>

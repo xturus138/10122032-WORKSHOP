@@ -1,5 +1,17 @@
 const multer = require('multer');
 
-const storage = multer({ dest: 'public/storage' });
+const storage =   multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, './public/uploads');
+    },
+    filename: function (req, file, callback) {
+        callback(null,Date.now() + '-' + file.originalname);
+    }
+});
 
-module.exports = storage;
+const upload = multer({
+    storage : storage,
+    limits : {fileSize : 1024*1024}
+})
+
+module.exports = upload;
