@@ -19,7 +19,7 @@ dibuat untuk seleksi Compfest Software Engineering Academy 14
 - **Hosting** : [Heroku](https://www.heroku.com/)
 
 ## Fitur
-- Menambah Barang
+- Membeli dan Menjual Barang
 - Pencarian dan Pengurutan Barang
 - Keranjang Belanja
 - Authentikasi (Login, Register)
