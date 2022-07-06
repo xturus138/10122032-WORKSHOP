@@ -8,10 +8,18 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/sweetalert2.css">
+    <link rel="icon" href="/img/icon.png">
     <title><%= title %></title>
     <style>
         body {
             font-family: 'Open Sauce One', sans-serif;
+        }
+        button:disabled,
+        button[disabled]{
+            background-color: var(--N75,#E5E7E9) !important;
+            color: var(--N400,#6C727C);
+            cursor: not-allowed;
+            display: block;
         }
     </style>
 </head>
@@ -32,13 +40,15 @@
                         <span class="auth-desc">Sudah punya akun ? <a href="/login" class="text-main ">Masuk</a> </span>
                     </div>
                     <form onsubmit="return false;" data-form>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label class="my-label">ID Siswa</label>
-                            <div class="input-group">
-                                <input type="text" class="input-id numeric" id="student_id" name="student_id"
-                                    maxlength="3" minlength="3" required autocomplete="off">
-                                <input class="input-group-text" name="unique_code" id="unique_code" style="width:20%"
-                                    readonly>
+                            <div class="input-group my-input" id="inputStudentId">
+                                <input type="text" class="my-form numeric" id="student_id" name="student_id"
+                                    maxlength="5" minlength="5" required autocomplete="off">
+                            </div>
+                            <div class="invalid-text">
+                                <p class="valid-label">Contoh : 1+2+3 = 06 ( ID : 12306 )</p>
+                                <p class="invalid-label"></p>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -58,7 +68,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <button class="auth-button" type="submit">Daftar</button>
+                            <button class="auth-button" type="submit" disabled>Daftar</button>
                         </div>
                     </form>
                 </div>
@@ -70,15 +80,31 @@
     <script src="/js/alert.js"></script>
     <script>
         $('#student_id').on('keyup', function () {
-            value = this.value.split('');
+            value = $('#student_id').val().slice(0,3).split('');
             sum = value.reduce((pv, cv) => {
                 return pv + (parseFloat(cv) || 0);
             }, 0);
             result = ('0' + sum).slice(-2)
-            if (value.length > 0) {
-                $('#unique_code').val(result);
-            } else if (value.length == 0) {
-                $('#unique_code').val('');
+            lastValue = $('#student_id').val().slice(3,5)
+
+            $('.invalid-label').show()
+            if ($('#student_id').val().length == 0 ){
+                $('.valid-label').hide()
+                $('.invalid-label').text('ID Siswa tidak boleh kosong');
+            }else{
+                if(lastValue != result){
+                    $('#inputStudentId').addClass('is-invalid')
+                    $('#inputStudentId').removeClass('is-valid')
+                    $('.valid-label').hide()
+                    $('.invalid-label').text('ID Siswa tidak sesuai')
+                    $('button').attr('disabled',true)
+                }else{
+                    $('#inputStudentId').removeClass('is-invalid')
+                    $('#inputStudentId').addClass('is-valid')
+                    $('.valid-label').show()
+                    $('.invalid-label').hide()
+                    $('button').attr('disabled',false)
+                }
             }
         });
 
@@ -88,7 +114,6 @@
                 type: 'POST',
                 data: {
                     student_id: $("input[name=student_id]").val(),
-                    unique_code: $("input[name=unique_code]").val(),
                     name: $("input[name=name]").val(),
                     password: $("input[name=password]").val()
                 },

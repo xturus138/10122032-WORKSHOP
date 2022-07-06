@@ -10,7 +10,7 @@ module.exports = {
     },
     register: async (req, res) => {
         const salt = bcrypt.genSaltSync(10)
-        const student_id = req.body['student_id'] += req.body['unique_code']
+        const student_id = req.body['student_id']
         try {
             const { data: user } = await supabase
                 .from('users')

@@ -279,6 +279,33 @@ footer {
     background-color: var(--color-page-background,#FFFFFF);
     border: 1px solid var(--color-border,#E5E7E9);
 }
+.is-invalid{
+    border: 1px solid var(--R500,#EF144A) !important;
+}
+.valid-label{
+    color: var(--color-text-low,rgba(49,53,59,0.68));
+    font-size: 12px;
+    line-height: 18px;
+    position: relative;
+    margin: 4px 0 0;
+}
+.invalid-label{
+    color: var(--R500,#EF144A);
+    font-size: 12px;
+    line-height: 18px;
+    position: relative;
+    margin: 4px 0px 0px;
+}
+.invalid-text{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: baseline;
+    -webkit-box-align: baseline;
+    -ms-flex-align: baseline;
+    align-items: baseline;
+}
 .my-form{
     padding-left: 12px;
     min-width: 0;
