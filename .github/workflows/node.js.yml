@@ -1,0 +1,45 @@
+# CI Name
+name: 'Deployment'
+
+# Only running when
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  build:
+    # Running on latest version of Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      # This action checks-out your repository under $GITHUB_WORKSPACE, so your workflow can access it.
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Setup Node for Installing Dependencies
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Installing Dependencies
+        run: npm install
+
+  deploy:
+    needs: build
+
+    # Running on latest version of Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install SSH
+        run: sudo apt-get install openssh-client
+
+      - name: Deploy with SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOSTNAME }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_KEY }}
+          script: cd {namafolder}/; git pull origin production; npm run build; pm2 restart {nama-pm2};
